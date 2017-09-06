@@ -6,11 +6,8 @@
 %
 
 %*************************** load the model **********************************************&
-addpath('F:\hxq\Calculation_7');
-addpath('F:\hxq_OneDrive\OneDrive\myResearch\Inertial_Lifr_Force\Control_Code\alpha_Lv2Crtn')
 ModelUtil.showProgress(true);
-undisturbedModel = mphopen('Paragon_withoutParticle.mph', 'undisturbedModel');
-flowModel        = mphopen('ParagonModel.mph', 'flowModel');
+flowModel        = mphopen('ParagonModel_V1.mph', 'flowModel');
 flowGeom         = flowModel.geom.get('geom1');
 flowMesh         = flowModel.mesh.get('mesh1');
 
@@ -76,58 +73,36 @@ deltaT_0 = 0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       Step 3     Running  iterations                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for index = 2:1:numDimStore
-        if Fi(index,3) == true
-            fprintf('The %dth calculation is already done, move forward to next.\n', index);    
-            continue;          
-        else
-            fprintf('The %dth calculation is Undergoing.\n', index);
-        end
-        Yp = Fi(index,1);
-        Zp = Fi(index,2);
-
+        testResult = zeros(19);
+        Yp = 2.5e-5;
+        Zp = 4.2e-5;
+        
         [vPx_0, omegaX_0, omegaY_0, omegaZ_0] = GetInitialValue(Yp, Zp, undisturbedModel);
 
         flowModel.param.set('Yp', Yp);
         flowModel.param.set('Zp', Zp);
-        
-        
-
         flowModel.geom('geom1').run;
-
         flowModel.mesh('mesh1').run;
         [ ...,
-                Fi(index,3 ), ...,   % ifSuccess if calculation is successful
-                Fi(index,4 ), ...,   % Velocity_x_steadyState
-                Fi(index,5 ), ...,   % Omega_x_steadyState,
-                Fi(index,6 ), ...,   % Omega_y_steadyState,
-                Fi(index,7 ), ...,   % Omega_z_steadyState
-                Fi(index,8 ), ...,   % F_x,
-                Fi(index,9 ), ...,   % F_y,
-                Fi(index,10), ...,   % F_z,
-                Fi(index,11), ...,   % Torq_x,
-                Fi(index,12), ...,   % Torq_y,
-                Fi(index,13), ...,   % Torq_z,
-                Fi(index,14), ...,   % Acc_x,
-                Fi(index,15), ...,   % Acc_y,
-                Fi(index,16), ...,   % Acc_z,
-                Fi(index,17), ...,   % Alpha_x,
-                Fi(index,18), ...,   % Alpha_y,
-                Fi(index,19)  ...,   % Alpha_z
+                testResult(3 ), ...,   % ifSuccess if calculation is successful
+                testResult(4 ), ...,   % Velocity_x_steadyState
+                testResult(5 ), ...,   % Omega_x_steadyState,
+                testResult(6 ), ...,   % Omega_y_steadyState,
+                testResult(7 ), ...,   % Omega_z_steadyState
+                testResult(8 ), ...,   % F_x,
+                testResult(9 ), ...,   % F_y,
+                testResult(10), ...,   % F_z,
+                testResult(11), ...,   % Torq_x,
+                testResult(12), ...,   % Torq_y,
+                testResult(13), ...,   % Torq_z,
+                testResult(14), ...,   % Acc_x,
+                testResult(15), ...,   % Acc_y,
+                testResult(16), ...,   % Acc_z,
+                testResult(17), ...,   % Alpha_x,
+                testResult(18), ...,   % Alpha_y,
+                testResult(19)  ...,   % Alpha_z
         ] ...,
         = ...,
         FiCalculation_V3(vPx_0,omegaX_0,omegaY_0,omegaZ_0, deltaT_0,flowModel);
-        save('Fi.mat', 'Fi');
 
-        %plot while calculating
-        resultMonitor = figure(2);
-        plot(Fi(:,1),Fi(:,2),'o','LineWidth',1,...  
-        'MarkerEdgeColor','k',...
-        'MarkerFaceColor','w',...
-        'MarkerSize',3);
-        drawnow;
-        hold on
-        quiver(Fi(:,1),Fi(:,2),Fi(:,9),Fi(:,10));
-        drawnow;
-        hold off
-end
+

@@ -6,7 +6,7 @@ function [ifSuccess, ...,
           Acc_x,Acc_y,Acc_z, ...,
           Alpha_x,Alpha_y,Alpha_z] ...,
 = ...,
-FiCalculation_V3(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
+FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
 
         %configuration of sub Loop for inertial lift force calculation
         numIter           = 1000;
@@ -38,7 +38,7 @@ FiCalculation_V3(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         Omega_x = Omega_x_0;
         Omega_y = Omega_y_0;
         Omega_z = Omega_z_0;
-
+        
 
         for index = 1:numIter
                 %solve the stationary flow field
@@ -91,53 +91,100 @@ FiCalculation_V3(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
 
                 iterMonitor = figure(1);
                 set(iterMonitor, 'name', [ 'deltaT is ', num2str(deltaT), ' oscillation is ', num2str(counterOscillation), ' iteration number is ', num2str(index) ], 'Numbertitle', 'off' );
-                subplot(2,4,1)
-                plot( Fxhstry(1:index, 1) )
-                title('Fx')
-                xlabel('iter')
-                drawnow
+                if index > 10
+                        subplot(2,4,1)
+                        plot( Fxhstry(index-1:index, 1) )
+                        title('Fx')
+                        xlabel('iter')
+                        drawnow
 
-                subplot(2,4,2)
-                semilogy( abs(torqueXhstry(1:index, 1)) )
-                title( 'torqueX')
-                xlabel('iter')
-                drawnow
+                        subplot(2,4,2)
+                        semilogy( abs(torqueXhstry(index-1:index, 1)) )
+                        title( 'torqueX')
+                        xlabel('iter')
+                        drawnow
 
-                subplot(2,4,3)
-                semilogy( abs(torqueYhstry(1:index, 1)) )
-                title( 'torqueY')
-                xlabel('iter')
+                        subplot(2,4,3)
+                        semilogy( abs(torqueYhstry(index-1:index, 1)) )
+                        title( 'torqueY')
+                        xlabel('iter')
 
-                subplot(2,4,4)
-                semilogy( abs(torqueZhstry(1:index, 1)) )
-                title( 'torqueZ')
-                xlabel('iter')
-                drawnow
+                        subplot(2,4,4)
+                        semilogy( abs(torqueZhstry(index-1:index, 1)) )
+                        title( 'torqueZ')
+                        xlabel('iter')
+                        drawnow
+                                
+                        subplot(2,4,5)
+                        semilogy(  abs(accXhstry(index-1:index, 1)) )
+                        title( 'accX')
+                        xlabel('iter')
+                        drawnow
+
+                        subplot(2,4,6)
+                        semilogy( abs(alphaXhstry(index-1:index, 1)) ) 
+                        title( 'alphaX')
+                        xlabel('iter')
+                        drawnow
                         
-                subplot(2,4,5)
-                semilogy(  abs(accXhstry(1:index, 1)) )
-                title( 'accX')
-                xlabel('iter')
-                drawnow
+                        subplot(2,4,7)
+                        semilogy( abs(alphaYhstry(index-1:index, 1)) )
+                        title( 'alphaY')
+                        xlabel('iter')
+                        drawnow
 
-                subplot(2,4,6)
-                semilogy( abs(alphaXhstry(1:index, 1)) ) 
-                title( 'alphaX')
-                xlabel('iter')
-                drawnow
-                
-                subplot(2,4,7)
-                semilogy( abs(alphaYhstry(1:index, 1)) )
-                title( 'alphaY')
-                xlabel('iter')
-                drawnow
+                        subplot(2,4,8)
+                        semilogy( abs(alphaZhstry(index-1:index, 1)) )
+                        title( 'alphaZ')
+                        xlabel('iter')                 
+                        drawnow        
+                else
+                        plot( Fxhstry(1:index, 1) )
+                        title('Fx')
+                        xlabel('iter')
+                        drawnow
 
-                subplot(2,4,8)
-                semilogy( abs(alphaZhstry(1:index, 1)) )
-                title( 'alphaZ')
-                xlabel('iter')                 
-                drawnow
-                
+                        subplot(2,4,2)
+                        semilogy( abs(torqueXhstry(1:index, 1)) )
+                        title( 'torqueX')
+                        xlabel('iter')
+                        drawnow
+
+                        subplot(2,4,3)
+                        semilogy( abs(torqueYhstry(1:index, 1)) )
+                        title( 'torqueY')
+                        xlabel('iter')
+
+                        subplot(2,4,4)
+                        semilogy( abs(torqueZhstry(1:index, 1)) )
+                        title( 'torqueZ')
+                        xlabel('iter')
+                        drawnow
+                                
+                        subplot(2,4,5)
+                        semilogy(  abs(accXhstry(1:index, 1)) )
+                        title( 'accX')
+                        xlabel('iter')
+                        drawnow
+
+                        subplot(2,4,6)
+                        semilogy( abs(alphaXhstry(1:index, 1)) ) 
+                        title( 'alphaX')
+                        xlabel('iter')
+                        drawnow
+                        
+                        subplot(2,4,7)
+                        semilogy( abs(alphaYhstry(1:index, 1)) )
+                        title( 'alphaY')
+                        xlabel('iter')
+                        drawnow
+
+                        subplot(2,4,8)
+                        semilogy( abs(alphaZhstry(1:index, 1)) )
+                        title( 'alphaZ')
+                        xlabel('iter')                 
+                        drawnow
+                end
                 
                 %check if iteration reaches oscillation state 
                 if (abs(accX)<1e-8) && (abs(alphaX)<1e-3) && (abs(alphaY)<1e-3) && (abs(alphaZ)<1e-3) && (index >= 10)
@@ -162,8 +209,6 @@ FiCalculation_V3(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                                 end
                         end
                 end
-                
-
                 
 
                 % In order to prevent the oscillation from intervient the convergency, time step is reduced
@@ -195,169 +240,32 @@ FiCalculation_V3(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                                 break;
                         end
                 end
+
+                % Debug Code Block
+                % In this code block, the key parameter are printed in order to check if the constant coef derived from
+                % the licit value
+                % the constant key parameters are
+                % Vp_y = 0 [m/s]
+                % Vp_z = 0 [m/s]
+                % Xp   = 125e-6 [m]
+                % Rp   = 5.5e-6 [m]
+                % Yp   = do not change in each all of FiCalculation    
+                % Zp   = do not change in each all of FiCalculation
+                Vp_y = flowModel.param.evaluate('Vp_y');
+                Vp_z = flowModel.param.evaluate('Vp_z');
+                Xp   = flowModel.param.evaluate('Xp');
+                Yp   = flowModel.param.evaluate('Yp');
+                Zp   = flowModel.param.evaluate('Zp');
+                Rp   = flowModel.param.evaluate('Rp');
+                fprintf('Vp_y is %8.5f \n', Vp_y);
+                fprintf('Vp_z is %8.5f \n', Vp_z);
+                fprintf('Xp is %8.5f \n', Xp);
+                fprintf('Yp is %8.5f \n', Yp);
+                fprintf('Zp is %8.5f \n', Zp);
+                fprintf('Rp is %8.5f \n', Rp);
+
+
         end
-
-
-        % the Debug part
-        % numIter = 10; 
-        % for index = 1:numIter
-        %         %get the dynamic variables
-        %         Fx      = 1;
-        %         Fy      = 1;
-        %         Fz      = 1;
-        %         torqueX = 1;
-        %         torqueY = 1;
-        %         torqueZ = 1;
-        %         accX    = 1;
-        %         accY    = 1;
-        %         accZ    = 1;
-        %         alphaX  = 1;
-        %         alphaY  = 1;
-        %         alphaZ  = 1;
-        %         %calculate next step's velocity and angular velocity
-        %         Vp_x    = Vp_x    + (accX   * deltaT);
-        %         Omega_x = Omega_x + (alphaX * deltaT);
-        %         Omega_y = Omega_y + (alphaY * deltaT);
-        %         Omega_z = Omega_z + (alphaZ * deltaT);
-                
-        %         vPxhstry(index,1)        = Vp_x;
-
-        %         omegaXhstry(index,1)     = Omega_x;
-        %         omegaYhstry(index,1)     = Omega_y;
-        %         omegaZhstry(index,1)     = Omega_z;
-                
-        %         Fxhstry(index,1)         = Fx;
-        %         Fyhstry(index,1)         = Fy;
-        %         Fzhstry(index,1)         = Fz;
-                
-        %         torqueXhstry(index,1)    = torqueX;
-        %         torqueYhstry(index,1)    = torqueY;
-        %         torqueZhstry(index,1)    = torqueZ;
-                
-        %         accXhstry(index,1)       = accX;
-        %         accYhstry(index,1)       = accY;
-        %         accZhstry(index,1)       = accZ;
-                
-        %         alphaXhstry(index,1)     = alphaX;
-        %         alphaYhstry(index,1)     = alphaY;
-        %         alphaZhstry(index,1)     = alphaZ;
-
-        %         iterMonitor = figure(1);
-        %         set(iterMonitor, 'name', [ 'deltaT is ', num2str(deltaT), ' oscillation is ', num2str(counterOscillation), ' iteration number is ', num2str(index) ], 'Numbertitle', 'off' );
-        %         subplot(2,4,1)
-        %         plot( Fxhstry(1:index, 1) )
-        %         title('Fx')
-        %         xlabel('iter')
-        %         drawnow
-
-        %         subplot(2,4,2)
-        %         semilogy( abs(torqueXhstry(1:index, 1)) )
-        %         title( 'torqueX')
-        %         xlabel('iter')
-        %         drawnow
-
-        %         subplot(2,4,3)
-        %         semilogy( abs(torqueYhstry(1:index, 1)) )
-        %         title( 'torqueY')
-        %         xlabel('iter')
-
-        %         subplot(2,4,4)
-        %         semilogy( abs(torqueZhstry(1:index, 1)) )
-        %         title( 'torqueZ')
-        %         xlabel('iter')
-        %         drawnow
-                        
-        %         subplot(2,4,5)
-        %         semilogy(  abs(accXhstry(1:index, 1)) )
-        %         title( 'accX')
-        %         xlabel('iter')
-        %         drawnow
-
-        %         subplot(2,4,6)
-        %         semilogy( abs(alphaXhstry(1:index, 1)) ) 
-        %         title( 'alphaX')
-        %         xlabel('iter')
-        %         drawnow
-                
-        %         subplot(2,4,7)
-        %         semilogy( abs(alphaYhstry(1:index, 1)) )
-        %         title( 'alphaY')
-        %         xlabel('iter')
-        %         drawnow
-
-        %         subplot(2,4,8)
-        %         semilogy( abs(alphaZhstry(1:index, 1)) )
-        %         title( 'alphaZ')
-        %         xlabel('iter')                 
-        %         drawnow
-                
-                
-        %         %check if iteration reaches oscillation state 
-        %         if (abs(accX)<1e-8) && (abs(alphaX)<1e-3) && (abs(alphaY)<1e-3) && (abs(alphaZ)<1e-3) && (index >= 10)
-        %                 if abs(Omega_x - omegaXhstry(index-1,1)) < 1e-3
-        %                         if abs( alphaX ) > abs( alphaXhstry(index-1,1) )
-        %                                 counterOscillation = counterOscillation + 1;
-        %                         end
-        %                 end
-        %                 if  abs(Omega_y - omegaYhstry(index-1,1)) < 1e-3
-        %                         if abs( alphaY ) > abs( alphaYhstry(index-1,1) )
-        %                                 counterOscillation = counterOscillation + 1;
-        %                         end
-        %                 end
-        %                 if  abs(Omega_z - omegaZhstry(index-1,1)) < 1e-3
-        %                         if abs( alphaZ ) > abs( alphaZhstry(index-1,1) )
-        %                                 counterOscillation = counterOscillation + 1;
-        %                         end
-        %                 end
-        %                 if  abs(Vp_x - vPxhstry(index-1,1)) < 1e-3
-        %                         if abs( accX ) > abs( accXhstry(index-1,1) )
-        %                                 counterOscillation = counterOscillation + 1;
-        %                         end
-        %                 end
-        %         end
-                
-
-                
-
-        %         % In order to prevent the oscillation from intervient the convergency, time step is reduced
-        %         if (counterOscillation > 10)
-        %                 fprintf('The oscillation state is detected! Time step is reduced! \n');
-        %                 if (deltaT > 1e-7)
-        %                         deltaT = deltaT / 2;
-        %                         counterOscillation = 0;
-        %                 else
-        %                         deltaT = 1e-7;
-        %                         counterOscillation = 0;
-        %                         fprintf('Warning! the minimum timestep is reached! \n');
-        %                 end
-        %                 %let the calculation move on
-        %                 continue;                
-        %         end
-                
-        %         % the convergency criterion
-        %         if ( (abs(accX)<1e-10) && (abs(alphaX)<1e-5) && (abs(alphaY)<1e-5) && (abs(alphaZ)<1e-5) )
-        %                 ifConverged = true;
-        %                 fprintf('the loop converges! Good convergency criterion reached! \n');
-        %                 fprintf('It takes %d iterations to reach the convergency! \n', index );                
-        %                 break;   
-        %         end
-
-        %         if (index == 1000)                      
-        %                 if (ifConverged == false)
-        %                         fprintf('the loop fail to converge! \n');
-        %                         break;
-        %                 end
-        %         end
-        % end
-
-
-
-
-
-
-
-
-
 
 
         %Output the vars
