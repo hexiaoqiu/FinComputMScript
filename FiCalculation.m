@@ -9,7 +9,7 @@ function [ifSuccess, ...,
 FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
 
         %configuration of sub Loop for inertial lift force calculation
-        numIter           = 1000;
+        numIter           = 100;
         ifConverged       = false;
         counterOscillation= 0;
         vPxhstry          = zeros(numIter,1);
@@ -33,12 +33,16 @@ FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                 deltaT = 2e-6;  
         else
                 deltaT = deltaT_0;
-        end 
+        end
+        % Make a guess of equilibrium state 
         Vp_x    = Vp_x_0;
+        flowModel.param.set('Vp_x', Vp_x);        
         Omega_x = Omega_x_0;
+        flowModel.param.set('Omega_x', Omega_x);        
         Omega_y = Omega_y_0;
-        Omega_z = Omega_z_0;
-        
+        flowModel.param.set('Omega_y', Omega_y);
+        Omega_z = Omega_z_0;        
+        flowModel.param.set('Omega_z', Omega_z);
 
         for index = 1:numIter
                 %solve the stationary flow field
@@ -93,95 +97,96 @@ FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                 set(iterMonitor, 'name', [ 'deltaT is ', num2str(deltaT), ' oscillation is ', num2str(counterOscillation), ' iteration number is ', num2str(index) ], 'Numbertitle', 'off' );
                 if index > 10
                         subplot(2,4,1)
-                        plot( Fxhstry(index-1:index, 1) )
+                        plot( Fxhstry(index-10:index, 1) )
                         title('Fx')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,2)
-                        semilogy( abs(torqueXhstry(index-1:index, 1)) )
+                        plot( torqueXhstry(index-10:index, 1) )
                         title( 'torqueX')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,3)
-                        semilogy( abs(torqueYhstry(index-1:index, 1)) )
+                        plot( torqueYhstry(index-10:index, 1) )
                         title( 'torqueY')
                         xlabel('iter')
 
                         subplot(2,4,4)
-                        semilogy( abs(torqueZhstry(index-1:index, 1)) )
+                        plot( torqueZhstry(index-10:index, 1) )
                         title( 'torqueZ')
                         xlabel('iter')
                         drawnow
                                 
                         subplot(2,4,5)
-                        semilogy(  abs(vPxhstry(index-1:index, 1)) )
-                        title( 'accX')
+                        plot(  vPxhstry(index-10:index, 1) )
+                        title( 'Particle Velocity')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,6)
-                        semilogy( abs(omegaXhstry(index-1:index, 1)) ) 
-                        title( 'alphaX')
+                        plot( omegaXhstry(index-10:index, 1) ) 
+                        title( 'omega X')
                         xlabel('iter')
                         drawnow
                         
                         subplot(2,4,7)
-                        semilogy( abs(omegaYhstry(index-1:index, 1)) )
-                        title( 'alphaY')
+                        plot( omegaYhstry(index-10:index, 1) )
+                        title( 'omega Y')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,8)
-                        semilogy( abs(omegaZhstry(index-1:index, 1)) )
-                        title( 'alphaZ')
+                        plot( omegaZhstry(index-10:index, 1) )
+                        title( 'omega Z')
                         xlabel('iter')                 
                         drawnow        
                 else
+                        subplot(2,4,1)
                         plot( Fxhstry(1:index, 1) )
                         title('Fx')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,2)
-                        semilogy( abs(torqueXhstry(1:index, 1)) )
+                        plot( torqueXhstry(1:index, 1) )
                         title( 'torqueX')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,3)
-                        semilogy( abs(torqueYhstry(1:index, 1)) )
+                        plot( torqueYhstry(1:index, 1) )
                         title( 'torqueY')
                         xlabel('iter')
 
                         subplot(2,4,4)
-                        semilogy( abs(torqueZhstry(1:index, 1)) )
+                        plot( torqueZhstry(1:index, 1) )
                         title( 'torqueZ')
                         xlabel('iter')
                         drawnow
                                 
                         subplot(2,4,5)
-                        semilogy(  abs(vPxhstry(1:index, 1)) )
-                        title( 'accX')
+                        plot(  vPxhstry(1:index, 1) )
+                        title( 'Particle Velocity' )
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,6)
-                        semilogy( abs(omegaXhstry(1:index, 1)) ) 
-                        title( 'alphaX')
+                        plot( omegaXhstry(1:index, 1) ) 
+                        title( 'omega X')
                         xlabel('iter')
                         drawnow
                         
                         subplot(2,4,7)
-                        semilogy( abs(omegaYhstry(1:index, 1)) )
-                        title( 'alphaY')
+                        plot( omegaYhstry(1:index, 1) )
+                        title( 'omega Y')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,8)
-                        semilogy( abs(omegaZhstry(1:index, 1)) )
-                        title( 'alphaZ')
+                        plot( omegaZhstry(1:index, 1) )
+                        title( 'omega Z')
                         xlabel('iter')                 
                         drawnow
                 end
@@ -251,18 +256,18 @@ FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                 % Rp   = 5.5e-6 [m]
                 % Yp   = do not change in each all of FiCalculation    
                 % Zp   = do not change in each all of FiCalculation
-                Vp_y = flowModel.param.evaluate('Vp_y');
-                Vp_z = flowModel.param.evaluate('Vp_z');
-                Xp   = flowModel.param.evaluate('Xp');
-                Yp   = flowModel.param.evaluate('Yp');
-                Zp   = flowModel.param.evaluate('Zp');
-                Rp   = flowModel.param.evaluate('Rp');
-                fprintf('Vp_y is %8.5f \n', Vp_y);
-                fprintf('Vp_z is %8.5f \n', Vp_z);
-                fprintf('Xp is %8.5f \n', Xp);
-                fprintf('Yp is %8.5f \n', Yp);
-                fprintf('Zp is %8.5f \n', Zp);
-                fprintf('Rp is %8.5f \n', Rp);
+                % Vp_y = flowModel.param.evaluate('Vp_y');
+                % Vp_z = flowModel.param.evaluate('Vp_z');
+                % Xp   = flowModel.param.evaluate('Xp');
+                % Yp   = flowModel.param.evaluate('Yp');
+                % Zp   = flowModel.param.evaluate('Zp');
+                % Rp   = flowModel.param.evaluate('Rp');
+                % fprintf('Vp_y is %8.6f \n', Vp_y);
+                % fprintf('Vp_z is %8.6f \n', Vp_z);
+                % fprintf('Xp is %8.6f \n', Xp);
+                % fprintf('Yp is %8.6f \n', Yp);
+                % fprintf('Zp is %8.6f \n', Zp);
+                % fprintf('Rp is %8.6f \n', Rp);
 
 
         end

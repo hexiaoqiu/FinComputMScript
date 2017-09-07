@@ -76,49 +76,51 @@ for index = 1:1:100
         % set the  particle's position
         flowModel.param.set('Yp', Yp);
         flowModel.param.set('Zp', Zp);
+        
         % bulid the geom and mesh according to particle's position
         flowModel.geom('geom1').run;
-        flowModel.mesh('mesh1').run;
-
         % debug code block in order to show the appearance of geom and mesh
-        mphgeom(flowModel, 'geom1', 'facealpha', 0.5);
-        pause     
-        mphmesh(flowModel, 'mesh1', 'facealpha', 0.5);
-        pause
+        % mphgeom(flowModel, 'geom1', 'facealpha', 0.5);
+        % pause
+
+        flowModel.mesh('mesh1').run;
+        % debug code block in order to show the appearance of geom and mesh        
+        % mphmesh(flowModel, 'mesh1', 'facealpha', 0.5);
+        % pause
 
         % call the function to calculate the Fin
-        % [ ...,
-        %         Fi(index,3 ), ...,   % ifSuccess if calculation is successful
-        %         Fi(index,4 ), ...,   % Velocity_x_steadyState
-        %         Fi(index,5 ), ...,   % Omega_x_steadyState,
-        %         Fi(index,6 ), ...,   % Omega_y_steadyState,
-        %         Fi(index,7 ), ...,   % Omega_z_steadyState
-        %         Fi(index,8 ), ...,   % F_x,
-        %         Fi(index,9 ), ...,   % F_y,
-        %         Fi(index,10), ...,   % F_z,
-        %         Fi(index,11), ...,   % Torq_x,
-        %         Fi(index,12), ...,   % Torq_y,
-        %         Fi(index,13), ...,   % Torq_z,
-        %         Fi(index,14), ...,   % Acc_x,
-        %         Fi(index,15), ...,   % Acc_y,
-        %         Fi(index,16), ...,   % Acc_z,
-        %         Fi(index,17), ...,   % Alpha_x,
-        %         Fi(index,18), ...,   % Alpha_y,
-        %         Fi(index,19)  ...,   % Alpha_z
-        % ] ...,
-        % = ...,
-        % FiCalculation(vPx_0,omegaX_0,omegaY_0,omegaZ_0, deltaT_0,flowModel);
-        % save('Fi.mat', 'Fi');
+        [ ...,
+                Fi(index,3 ), ...,   % ifSuccess if calculation is successful
+                Fi(index,4 ), ...,   % Velocity_x_steadyState
+                Fi(index,5 ), ...,   % Omega_x_steadyState,
+                Fi(index,6 ), ...,   % Omega_y_steadyState,
+                Fi(index,7 ), ...,   % Omega_z_steadyState
+                Fi(index,8 ), ...,   % F_x,
+                Fi(index,9 ), ...,   % F_y,
+                Fi(index,10), ...,   % F_z,
+                Fi(index,11), ...,   % Torq_x,
+                Fi(index,12), ...,   % Torq_y,
+                Fi(index,13), ...,   % Torq_z,
+                Fi(index,14), ...,   % Acc_x,
+                Fi(index,15), ...,   % Acc_y,
+                Fi(index,16), ...,   % Acc_z,
+                Fi(index,17), ...,   % Alpha_x,
+                Fi(index,18), ...,   % Alpha_y,
+                Fi(index,19)  ...,   % Alpha_z
+        ] ...,
+        = ...,
+        FiCalculation(vPx_0,omegaX_0,omegaY_0,omegaZ_0, deltaT_0,flowModel);
+        save('Fi.mat', 'Fi');
 
         %plot while calculating
-%         resultMonitor = figure(2);
-%         plot(Fi(:,1),Fi(:,2),'o','LineWidth',1,...  
-%         'MarkerEdgeColor','k',...
-%         'MarkerFaceColor','w',...
-%         'MarkerSize',3);
-%         drawnow;
-%         hold on
-%         quiver(Fi(:,1),Fi(:,2),Fi(:,9),Fi(:,10));
-%         drawnow;
-%         hold off
+        resultMonitor = figure(2);
+        plot(Fi(:,1),Fi(:,2),'o','LineWidth',1,...  
+        'MarkerEdgeColor','k',...
+        'MarkerFaceColor','w',...
+        'MarkerSize',3);
+        drawnow;
+        hold on
+        quiver(Fi(:,1),Fi(:,2),Fi(:,9),Fi(:,10));
+        drawnow;
+        hold off
 end
