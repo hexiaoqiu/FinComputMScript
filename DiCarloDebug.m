@@ -76,8 +76,6 @@ deltaT_0 = 0;
         testResult = zeros(19);
         Yp = 2.5e-5;
         Zp = 4.2e-5;
-        
-        [vPx_0, omegaX_0, omegaY_0, omegaZ_0] = GetInitialValue(Yp, Zp, undisturbedModel);
 
         flowModel.param.set('Yp', Yp);
         flowModel.param.set('Zp', Zp);
@@ -103,6 +101,6 @@ deltaT_0 = 0;
                 testResult(19)  ...,   % Alpha_z
         ] ...,
         = ...,
-        FiCalculation_V3(vPx_0,omegaX_0,omegaY_0,omegaZ_0, deltaT_0,flowModel);
+        FiCalculation(vPx_0,omegaX_0,omegaY_0,omegaZ_0, deltaT_0,flowModel);
 
 
