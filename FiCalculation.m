@@ -116,25 +116,25 @@ FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         drawnow
                                 
                         subplot(2,4,5)
-                        semilogy(  abs(accXhstry(index-1:index, 1)) )
+                        semilogy(  abs(vPxhstry(index-1:index, 1)) )
                         title( 'accX')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,6)
-                        semilogy( abs(alphaXhstry(index-1:index, 1)) ) 
+                        semilogy( abs(omegaXhstry(index-1:index, 1)) ) 
                         title( 'alphaX')
                         xlabel('iter')
                         drawnow
                         
                         subplot(2,4,7)
-                        semilogy( abs(alphaYhstry(index-1:index, 1)) )
+                        semilogy( abs(omegaYhstry(index-1:index, 1)) )
                         title( 'alphaY')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,8)
-                        semilogy( abs(alphaZhstry(index-1:index, 1)) )
+                        semilogy( abs(omegaZhstry(index-1:index, 1)) )
                         title( 'alphaZ')
                         xlabel('iter')                 
                         drawnow        
@@ -162,25 +162,25 @@ FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         drawnow
                                 
                         subplot(2,4,5)
-                        semilogy(  abs(accXhstry(1:index, 1)) )
+                        semilogy(  abs(vPxhstry(1:index, 1)) )
                         title( 'accX')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,6)
-                        semilogy( abs(alphaXhstry(1:index, 1)) ) 
+                        semilogy( abs(omegaXhstry(1:index, 1)) ) 
                         title( 'alphaX')
                         xlabel('iter')
                         drawnow
                         
                         subplot(2,4,7)
-                        semilogy( abs(alphaYhstry(1:index, 1)) )
+                        semilogy( abs(omegaYhstry(1:index, 1)) )
                         title( 'alphaY')
                         xlabel('iter')
                         drawnow
 
                         subplot(2,4,8)
-                        semilogy( abs(alphaZhstry(1:index, 1)) )
+                        semilogy( abs(omegaZhstry(1:index, 1)) )
                         title( 'alphaZ')
                         xlabel('iter')                 
                         drawnow
