@@ -232,7 +232,7 @@ FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                 end
                 
                 % the convergency criterion
-                if ( (abs(accX)<1e-10) && (abs(alphaX)<1e-5) && (abs(alphaY)<1e-5) && (abs(alphaZ)<1e-5) )
+                if ( (abs(accX)<1e-11) && (abs(alphaX)<1e-6) && (abs(alphaY)<1e-6) && (abs(alphaZ)<1e-6) )
                         ifConverged = true;
                         fprintf('the loop converges! Good convergency criterion reached! \n');
                         fprintf('It takes %d iterations to reach the convergency! \n', index );                

@@ -64,43 +64,47 @@ for indexY = 0:1:maxIndexY
                 index = index + 1;
         end
 end
-vPx_0 = 0;
-omegaX_0 = 0;
-omegaY_0 = 0;
-omegaZ_0 = 0;
+vPx_0 = 0.857730833816637;
+omegaX_0 = 36.691906804135650;
+omegaY_0 = -3.839509213725493e+04;
+omegaZ_0 = 1.233145755837119e+02;
 deltaT_0 = 0;
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       Step 3     Running  iterations                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        testResult = zeros(19);
+        testResult = zeros(1,19);
         Yp = 2.5e-5;
         Zp = 4.2e-5;
+        testResult(1,1) = Yp;
+        testResult(1,2) = Zp;
 
-        flowModel.param.set('Yp', Yp);
-        flowModel.param.set('Zp', Zp);
-        flowModel.geom('geom1').run;
-        flowModel.mesh('mesh1').run;
-        [ ...,
-                testResult(3 ), ...,   % ifSuccess if calculation is successful
-                testResult(4 ), ...,   % Velocity_x_steadyState
-                testResult(5 ), ...,   % Omega_x_steadyState,
-                testResult(6 ), ...,   % Omega_y_steadyState,
-                testResult(7 ), ...,   % Omega_z_steadyState
-                testResult(8 ), ...,   % F_x,
-                testResult(9 ), ...,   % F_y,
-                testResult(10), ...,   % F_z,
-                testResult(11), ...,   % Torq_x,
-                testResult(12), ...,   % Torq_y,
-                testResult(13), ...,   % Torq_z,
-                testResult(14), ...,   % Acc_x,
-                testResult(15), ...,   % Acc_y,
-                testResult(16), ...,   % Acc_z,
-                testResult(17), ...,   % Alpha_x,
-                testResult(18), ...,   % Alpha_y,
-                testResult(19)  ...,   % Alpha_z
-        ] ...,
-        = ...,
-        FiCalculation(vPx_0,omegaX_0,omegaY_0,omegaZ_0, deltaT_0,flowModel);
+        testResult(1,3:19) = Get1PointFi(Yp, Zp, flowModel);
+
+        % flowModel.param.set('Yp', Yp);
+        % flowModel.param.set('Zp', Zp);
+        % flowModel.geom('geom1').run;
+        % flowModel.mesh('mesh1').run;
+        % [ ...,
+        %         testResult(3 ), ...,   % ifSuccess if calculation is successful
+        %         testResult(4 ), ...,   % Velocity_x_steadyState
+        %         testResult(5 ), ...,   % Omega_x_steadyState,
+        %         testResult(6 ), ...,   % Omega_y_steadyState,
+        %         testResult(7 ), ...,   % Omega_z_steadyState
+        %         testResult(8 ), ...,   % F_x,
+        %         testResult(9 ), ...,   % F_y,
+        %         testResult(10), ...,   % F_z,
+        %         testResult(11), ...,   % Torq_x,
+        %         testResult(12), ...,   % Torq_y,
+        %         testResult(13), ...,   % Torq_z,
+        %         testResult(14), ...,   % Acc_x,
+        %         testResult(15), ...,   % Acc_y,
+        %         testResult(16), ...,   % Acc_z,
+        %         testResult(17), ...,   % Alpha_x,
+        %         testResult(18), ...,   % Alpha_y,
+        %         testResult(19)  ...,   % Alpha_z
+        % ] ...,
+        % = ...,
+        % FiCalculation(vPx_0,omegaX_0,omegaY_0,omegaZ_0, deltaT_0,flowModel);
 
 
