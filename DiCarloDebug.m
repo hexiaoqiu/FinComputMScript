@@ -31,8 +31,8 @@ Xp = flowModel.param.evaluate( {'Xp'} );                %[m]
 Yp = flowModel.param.evaluate( {'Yp'} );                %[m]
 Zp = flowModel.param.evaluate( {'Zp'} );                %[m]
 %-----> the particle shall never touch the wall
-LimitZ      = heightChannel/2  - Rp;                         % Upper Limitation of Z direct variation 
-LimitY      = widthChannel/2  - Rp;                         % Upper Limitation of Y direct variation 
+LimitZ = heightChannel/2  - Rp;                         % Upper Limitation of Z direct variation 
+LimitY = widthChannel/2  - Rp;                         % Upper Limitation of Y direct variation 
 deltaY = 1e-6;                                          % step lengthe of Y
 deltaZ = 1e-6;                                          % step lengthe of Z
 %max iter number of iteration
@@ -64,11 +64,17 @@ for indexY = 0:1:maxIndexY
                 index = index + 1;
         end
 end
-vPx_0 = 0.857730833816637;
-omegaX_0 = 36.691906804135650;
-omegaY_0 = -3.839509213725493e+04;
-omegaZ_0 = 1.233145755837119e+02;
-deltaT_0 = 0;
+vPx_0            = 0.857730833816637;
+omegaX_0         = 36.691906804135650;
+omegaY_0         = -3.839509213725493e+04;
+omegaZ_0         = 1.233145755837119e+02;
+deltaT_0         = 1e-8;
+initialCondition = zeros(5,1);
+initCd(1)        = vPx_0   ;
+initCd(2)        = omegaX_0;
+initCd(3)        = omegaY_0;
+initCd(4)        = omegaZ_0;
+initCd(5)        = deltaT_0;
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       Step 3     Running  iterations                                    %
@@ -79,32 +85,6 @@ deltaT_0 = 0;
         testResult(1,1) = Yp;
         testResult(1,2) = Zp;
 
-        testResult(1,3:19) = Get1PointFi(Yp, Zp, flowModel);
-
-        % flowModel.param.set('Yp', Yp);
-        % flowModel.param.set('Zp', Zp);
-        % flowModel.geom('geom1').run;
-        % flowModel.mesh('mesh1').run;
-        % [ ...,
-        %         testResult(3 ), ...,   % ifSuccess if calculation is successful
-        %         testResult(4 ), ...,   % Velocity_x_steadyState
-        %         testResult(5 ), ...,   % Omega_x_steadyState,
-        %         testResult(6 ), ...,   % Omega_y_steadyState,
-        %         testResult(7 ), ...,   % Omega_z_steadyState
-        %         testResult(8 ), ...,   % F_x,
-        %         testResult(9 ), ...,   % F_y,
-        %         testResult(10), ...,   % F_z,
-        %         testResult(11), ...,   % Torq_x,
-        %         testResult(12), ...,   % Torq_y,
-        %         testResult(13), ...,   % Torq_z,
-        %         testResult(14), ...,   % Acc_x,
-        %         testResult(15), ...,   % Acc_y,
-        %         testResult(16), ...,   % Acc_z,
-        %         testResult(17), ...,   % Alpha_x,
-        %         testResult(18), ...,   % Alpha_y,
-        %         testResult(19)  ...,   % Alpha_z
-        % ] ...,
-        % = ...,
-        % FiCalculation(vPx_0,omegaX_0,omegaY_0,omegaZ_0, deltaT_0,flowModel);
+        testResult(1,3:19) = Get1PointFi(Yp, Zp, initialCondition, flowModel);
 
 

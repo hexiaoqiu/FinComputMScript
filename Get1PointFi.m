@@ -1,15 +1,20 @@
-function Results = Get1PointFi( Y, Z, flowModel )
+function Results = Get1PointFi( Y, Z, initCd,flowModel )
 %myFun - Description
 %
 % Syntax: Fi = Get1PointFi(info, flowModel)
 %
 % Long description
         Results = zeros(1,17);
-        vPx_0    = 0;
-        omegaX_0 = 0;
-        omegaY_0 = 0;
-        omegaZ_0 = 0;
-        deltaT_0 = 0;
+        inputSize = size(initCd);
+        if inputSize(1) ~= 5 || inputSize(2) ~= 1
+                fprintf('the input Initial Condition vector is not well shaped')
+                return
+        end
+        vPx_0    = initCd(1);
+        omegaX_0 = initCd(2);
+        omegaY_0 = initCd(3);
+        omegaZ_0 = initCd(4);
+        deltaT_0 = initCd(5);
 
         flowModel.param.set('Yp', Y);
         flowModel.param.set('Zp', Z);
