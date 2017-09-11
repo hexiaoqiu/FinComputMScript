@@ -56,6 +56,6 @@ function Results = Get1PointFi( Y, Z, initCd,flowModel )
                 Results(1,19)  ...,   % Alpha_z
         ] ...,
         = ...,
-        FiCalculation(vPx_0,omegaX_0,omegaY_0,omegaZ_0, deltaT_0,flowModel);
+        FiCal(vPx_0,omegaX_0,omegaY_0,omegaZ_0, deltaT_0,flowModel);
 
 end

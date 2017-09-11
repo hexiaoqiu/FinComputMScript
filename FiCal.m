@@ -6,7 +6,7 @@ function [ifSuccess, ...,
           Acc_x,Acc_y,Acc_z, ...,
           Alpha_x,Alpha_y,Alpha_z] ...,
 = ...,
-FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
+FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
 
         %configuration of sub Loop for inertial lift force calculation
         numIter           = 100;
