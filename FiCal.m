@@ -63,6 +63,7 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         Omega_z = Omega_z_0;        
         flowModel.param.set('Omega_z', Omega_z);
 
+        % iteration code
         for index = 1:numIter
                 %solve the stationary flow field
                 flowModel.study('std1').run;
@@ -191,28 +192,28 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         end
                 end
 
-                % Debug Code Block
-                % In this code block, the key parameter are printed in order to check if the constant coef derived from
-                % the licit value
-                % the constant key parameters are
-                % Vp_y = 0 [m/s]
-                % Vp_z = 0 [m/s]
-                % Xp   = 125e-6 [m]
-                % Rp   = 5.5e-6 [m]
-                % Yp   = do not change in each all of FiCalculation    
-                % Zp   = do not change in each all of FiCalculation
-                % Vp_y = flowModel.param.evaluate('Vp_y');
-                % Vp_z = flowModel.param.evaluate('Vp_z');
-                % Xp   = flowModel.param.evaluate('Xp');
-                % Yp   = flowModel.param.evaluate('Yp');
-                % Zp   = flowModel.param.evaluate('Zp');
-                % Rp   = flowModel.param.evaluate('Rp');
-                % fprintf('Vp_y is %8.6f \n', Vp_y);
-                % fprintf('Vp_z is %8.6f \n', Vp_z);
-                % fprintf('Xp is %8.6f \n', Xp);
-                % fprintf('Yp is %8.6f \n', Yp);
-                % fprintf('Zp is %8.6f \n', Zp);
-                % fprintf('Rp is %8.6f \n', Rp);
+        %         % Debug Code Block
+        %         % In this code block, the key parameter are printed in order to check if the constant coef derived from
+        %         % the licit value
+        %         % the constant key parameters are
+        %         % Vp_y = 0 [m/s]
+        %         % Vp_z = 0 [m/s]
+        %         % Xp   = 125e-6 [m]
+        %         % Rp   = 5.5e-6 [m]
+        %         % Yp   = do not change in each all of FiCalculation    
+        %         % Zp   = do not change in each all of FiCalculation
+        %         % Vp_y = flowModel.param.evaluate('Vp_y');
+        %         % Vp_z = flowModel.param.evaluate('Vp_z');
+        %         % Xp   = flowModel.param.evaluate('Xp');
+        %         % Yp   = flowModel.param.evaluate('Yp');
+        %         % Zp   = flowModel.param.evaluate('Zp');
+        %         % Rp   = flowModel.param.evaluate('Rp');
+        %         % fprintf('Vp_y is %8.6f \n', Vp_y);
+        %         % fprintf('Vp_z is %8.6f \n', Vp_z);
+        %         % fprintf('Xp is %8.6f \n', Xp);
+        %         % fprintf('Yp is %8.6f \n', Yp);
+        %         % fprintf('Zp is %8.6f \n', Zp);
+        %         % fprintf('Rp is %8.6f \n', Rp);
 
 
         end
@@ -242,44 +243,64 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         Alpha_y                = mphglobal(flowModel, {'alphaY'});
         Alpha_z                = mphglobal(flowModel, {'alphaZ'});
 
+        % Debug Code faked output
+        % ifSuccess              = 1;
+        % Velocity_x_steadyState = 2;
+        % Omega_x_steadyState    = 3;
+        % Omega_y_steadyState    = 4;
+        % Omega_z_steadyState    = 5;
+        % F_x                    = 6;
+        % F_y                    = 7;
+        % F_z                    = 8;
+        % Torq_x                 = 9;
+        % Torq_y                 = 10;
+        % Torq_z                 = 11;
+        % Acc_x                  = 12;
+        % Acc_y                  = 13;
+        % Acc_z                  = 14;
+        % Alpha_x                = 15;
+        % Alpha_y                = 16;
+        % Alpha_z                = 17;
+
         % save the track of convergency in order to debug
         Yp = flowModel.param.evaluate('Yp');
         Zp = flowModel.param.evaluate('Zp');
         Yp = Yp * 1e6;
         Zp = Zp * 1e6;
         % save func takes string as variables
-        save(['Yp',num2str(Yp),'Zp',num2str(Zp),'_PointTrack'], ...,
-             'vPxhstry',                ...,
-             'omegaXhstry'  ,           ...,
-             'omegaYhstry'  ,           ...,
-             'omegaZhstry'  ,           ...,
-             'Fxhstry'      ,           ...,
-             'Fyhstry'      ,           ...,
-             'Fzhstry'      ,           ...,
-             'torqueXhstry' ,           ...,
-             'torqueYhstry' ,           ...,
-             'torqueZhstry' ,           ...,
-             'accXhstry'    ,           ...,
-             'accYhstry'    ,           ...,
-             'accZhstry'    ,           ...,
-             'alphaXhstry'  ,           ...,
-             'alphaYhstry'  ,           ...,
-             'alphaZhstry'  ,           ...,
-             'delta_vPxhstry'     ,     ...,
-             'delta_omegaXhstry'  ,     ...,
-             'delta_omegaYhstry'  ,     ...,
-             'delta_omegaZhstry'  ,     ...,
-             'delta_Fxhstry'      ,     ...,
-             'delta_Fyhstry'      ,     ...,
-             'delta_Fzhstry'      ,     ...,
-             'delta_torqueXhstry' ,     ...,
-             'delta_torqueYhstry' ,     ...,
-             'delta_torqueZhstry' ,     ...,
-             'delta_accXhstry'    ,     ...,
-             'delta_accYhstry'    ,     ...,
-             'delta_accZhstry'    ,     ...,
-             'delta_alphaXhstry'  ,     ...,
-             'delta_alphaYhstry'  ,     ...,
-             'delta_alphaZhstry'  );
+        save(   ['Yp',num2str(Yp),'Zp',num2str(Zp),'_PointTrack'], ...,
+                'vPxhstry',                ...,
+                'omegaXhstry'  ,           ...,
+                'omegaYhstry'  ,           ...,
+                'omegaZhstry'  ,           ...,
+                'Fxhstry'      ,           ...,
+                'Fyhstry'      ,           ...,
+                'Fzhstry'      ,           ...,
+                'torqueXhstry' ,           ...,
+                'torqueYhstry' ,           ...,
+                'torqueZhstry' ,           ...,
+                'accXhstry'    ,           ...,
+                'accYhstry'    ,           ...,
+                'accZhstry'    ,           ...,
+                'alphaXhstry'  ,           ...,
+                'alphaYhstry'  ,           ...,
+                'alphaZhstry'  ,           ...,
+                'delta_vPxhstry'     ,     ...,
+                'delta_omegaXhstry'  ,     ...,
+                'delta_omegaYhstry'  ,     ...,
+                'delta_omegaZhstry'  ,     ...,
+                'delta_Fxhstry'      ,     ...,
+                'delta_Fyhstry'      ,     ...,
+                'delta_Fzhstry'      ,     ...,
+                'delta_torqueXhstry' ,     ...,
+                'delta_torqueYhstry' ,     ...,
+                'delta_torqueZhstry' ,     ...,
+                'delta_accXhstry'    ,     ...,
+                'delta_accYhstry'    ,     ...,
+                'delta_accZhstry'    ,     ...,
+                'delta_alphaXhstry'  ,     ...,
+                'delta_alphaYhstry'  ,     ...,
+                'delta_alphaZhstry'        ...,
+            );
 
 end

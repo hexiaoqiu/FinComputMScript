@@ -23,21 +23,21 @@ flowMesh         = flowModel.mesh.get('mesh1');
 %    channel Hight           |                          |
 %      z dimension           |                          |
 %                            |__________________________|
-heightChannel  = flowModel.param.evaluate( {'H'} );          %[m]
+heightChannel = flowModel.param.evaluate( {'H'} );          %[m]
 widthChannel  = flowModel.param.evaluate( {'H'} );          %[m]
 %-----> Particle Geom
-Rp = flowModel.param.evaluate( {'Rp'} );                %[m]
-Xp = flowModel.param.evaluate( {'Xp'} );                %[m]
-Yp = flowModel.param.evaluate( {'Yp'} );                %[m]
-Zp = flowModel.param.evaluate( {'Zp'} );                %[m]
+Rp            = flowModel.param.evaluate( {'Rp'} );                %[m]
+Xp            = flowModel.param.evaluate( {'Xp'} );                %[m]
+Yp            = flowModel.param.evaluate( {'Yp'} );                %[m]
+Zp            = flowModel.param.evaluate( {'Zp'} );                %[m]
 %-----> the particle shall never touch the wall
-LimitZ = heightChannel/2  - Rp;                         % Upper Limitation of Z direct variation 
-LimitY = widthChannel/2  - Rp;                         % Upper Limitation of Y direct variation 
-deltaY = 1e-6;                                          % step lengthe of Y
-deltaZ = 1e-6;                                          % step lengthe of Z
+LimitZ        = heightChannel/2  - Rp;                         % Upper Limitation of Z direct variation 
+LimitY        = widthChannel/2  - Rp;                         % Upper Limitation of Y direct variation 
+deltaY        = 1e-6;                                          % step lengthe of Y
+deltaZ        = 1e-6;                                          % step lengthe of Z
 %max iter number of iteration
-maxIndexY = fix( LimitY/deltaY );
-maxIndexZ = fix( LimitZ/deltaZ ); 
+maxIndexY     = fix( LimitY/deltaY );
+maxIndexZ     = fix( LimitZ/deltaZ ); 
 %check the circumstance that the particle is tangency to the wall
 while (maxIndexY*deltaY >= LimitY) 
         fprintf('index Y error');
