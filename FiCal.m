@@ -46,7 +46,11 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         delta_alphaYhstry       = zeros(numIter,1);
         delta_alphaZhstry       = zeros(numIter,1);
         % set up the initial value
-        deltaT = deltaT_0;
+        if deltaT_0 <= 1e-10
+                deltaT = 2e-6;
+        else
+                deltaT = deltaT_0;
+        end
 
 
         % Make a guess of equilibrium state 
@@ -122,79 +126,14 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         delta_alphaZhstry(index,1)       = abs( alphaZhstry(index,1)  - alphaZhstry(index-1,1)  );
                 end
 
-                iterMonitor = figure(1);
-                set(iterMonitor, 'name', [ 'deltaT is ', num2str(deltaT), ' oscillation is ', num2str(counterOscillation), ' iteration number is ', num2str(index) ], 'Numbertitle', 'off' );
-                if index > 10
-                        subplot(2,3,1)
-                        plot( delta_Fxhstry(index-10:index, 1) )
-                        title('delta Fx')
-                        xlabel('iter')
-                        drawnow
-
-                        subplot(2,3,2)
-                        plot( delta_Fyhstry(index-10:index, 1) )
-                        title( 'delta Fy')
-                        xlabel('iter')
-                        drawnow
-
-                        subplot(2,3,3)
-                        plot( delta_Fzhstry(index-10:index, 1) )
-                        title( 'delta Fz')
-                        xlabel('iter')
-
-                        subplot(2,3,4)
-                        plot( delta_torqueXhstry(index-10:index, 1) )
-                        title( 'delta tor X')
-                        xlabel('iter')
-                        drawnow
-                                
-                        subplot(2,3,5)
-                        plot(  delta_torqueYhstry(index-10:index, 1) )
-                        title( 'delta Particle Velocity')
-                        xlabel('iter')
-                        drawnow
-
-                        subplot(2,3,6)
-                        plot( delta_torqueZhstry(index-10:index, 1) ) 
-                        title( 'delta omega X')
-                        xlabel('iter')
-                        drawnow
+                if plotTrace('Force', 6, index, Fxhstry, Fyhstry, Fzhstry, delta_Fxhstry, delta_Fyhstry, delta_Fzhstry) == false
+                        fprintf('Force plot go wrong! \n');
+                        return
+                end
                 
-                else
-                        subplot(2,3,1)
-                        plot( delta_Fxhstry(1:index, 1) )
-                        title('delta Fx')
-                        xlabel('iter')
-                        drawnow
-
-                        subplot(2,3,2)
-                        plot( delta_Fyhstry(1:index, 1) )
-                        title( 'delta Fy')
-                        xlabel('iter')
-                        drawnow
-
-                        subplot(2,3,3)
-                        plot( delta_Fzhstry(1:index, 1) )
-                        title( 'delta Fz')
-                        xlabel('iter')
-
-                        subplot(2,3,4)
-                        plot( delta_torqueXhstry(1:index, 1) )
-                        title( 'delta tor X')
-                        xlabel('iter')
-                        drawnow
-                                
-                        subplot(2,3,5)
-                        plot(  delta_torqueYhstry(1:index, 1) )
-                        title( 'delta Particle Velocity')
-                        xlabel('iter')
-                        drawnow
-
-                        subplot(2,3,6)
-                        plot( delta_torqueZhstry(1:index, 1) ) 
-                        title( 'delta omega X')
-                        xlabel('iter')
-                        drawnow      
+                if plotTrace('Torque', 9, index, torqueXhstry, torqueYhstry, torqueZhstry, delta_torqueXhstry, delta_torqueYhstry, delta_torqueZhstry) == false
+                        fprintf('Torque plot go wrong! \n');
+                        return
                 end
                 
                 %check if iteration reaches oscillation state 
@@ -308,38 +247,39 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         Zp = flowModel.param.evaluate('Zp');
         Yp = Yp * 1e6;
         Zp = Zp * 1e6;
+        % save func takes string as variables
         save(['Yp',num2str(Yp),'Zp',num2str(Zp),'_PointTrack'], ...,
-             vPxhstry,                ...,
-             omegaXhstry  ,           ...,
-             omegaYhstry  ,           ...,
-             omegaZhstry  ,           ...,
-             Fxhstry      ,           ...,
-             Fyhstry      ,           ...,
-             Fzhstry      ,           ...,
-             torqueXhstry ,           ...,
-             torqueYhstry ,           ...,
-             torqueZhstry ,           ...,
-             accXhstry    ,           ...,
-             accYhstry    ,           ...,
-             accZhstry    ,           ...,
-             alphaXhstry  ,           ...,
-             alphaYhstry  ,           ...,
-             alphaZhstry  ,           ...,
-             delta_vPxhstry     ,     ...,
-             delta_omegaXhstry  ,     ...,
-             delta_omegaYhstry  ,     ...,
-             delta_omegaZhstry  ,     ...,
-             delta_Fxhstry      ,     ...,
-             delta_Fyhstry      ,     ...,
-             delta_Fzhstry      ,     ...,
-             delta_torqueXhstry ,     ...,
-             delta_torqueYhstry ,     ...,
-             delta_torqueZhstry ,     ...,
-             delta_accXhstry    ,     ...,
-             delta_accYhstry    ,     ...,
-             delta_accZhstry    ,     ...,
-             delta_alphaXhstry  ,     ...,
-             delta_alphaYhstry  ,     ...,
-             delta_alphaZhstry  );
+             'vPxhstry',                ...,
+             'omegaXhstry'  ,           ...,
+             'omegaYhstry'  ,           ...,
+             'omegaZhstry'  ,           ...,
+             'Fxhstry'      ,           ...,
+             'Fyhstry'      ,           ...,
+             'Fzhstry'      ,           ...,
+             'torqueXhstry' ,           ...,
+             'torqueYhstry' ,           ...,
+             'torqueZhstry' ,           ...,
+             'accXhstry'    ,           ...,
+             'accYhstry'    ,           ...,
+             'accZhstry'    ,           ...,
+             'alphaXhstry'  ,           ...,
+             'alphaYhstry'  ,           ...,
+             'alphaZhstry'  ,           ...,
+             'delta_vPxhstry'     ,     ...,
+             'delta_omegaXhstry'  ,     ...,
+             'delta_omegaYhstry'  ,     ...,
+             'delta_omegaZhstry'  ,     ...,
+             'delta_Fxhstry'      ,     ...,
+             'delta_Fyhstry'      ,     ...,
+             'delta_Fzhstry'      ,     ...,
+             'delta_torqueXhstry' ,     ...,
+             'delta_torqueYhstry' ,     ...,
+             'delta_torqueZhstry' ,     ...,
+             'delta_accXhstry'    ,     ...,
+             'delta_accYhstry'    ,     ...,
+             'delta_accZhstry'    ,     ...,
+             'delta_alphaXhstry'  ,     ...,
+             'delta_alphaYhstry'  ,     ...,
+             'delta_alphaZhstry'  );
 
 end
