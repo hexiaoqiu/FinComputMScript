@@ -64,11 +64,16 @@ for indexY = 0:1:maxIndexY
                 index = index + 1;
         end
 end
-vPx_0            = 0.857730833816637;
-omegaX_0         = 36.691906804135650;
-omegaY_0         = -3.839509213725493e+04;
-omegaZ_0         = 1.233145755837119e+02;
-deltaT_0         = 1e-8;
+% vPx_0            = 0.857730833816637;
+% omegaX_0         = 36.691906804135650;
+% omegaY_0         = -3.839509213725493e+04;
+% omegaZ_0         = 1.233145755837119e+02;
+% deltaT_0         = 1e-8;
+vPx_0            = 0;
+omegaX_0         = 0;
+omegaY_0         = 0;
+omegaZ_0         = 0;
+deltaT_0         = 0;
 initialCondition = zeros(5,1);
 initCd(1)        = vPx_0   ;
 initCd(2)        = omegaX_0;

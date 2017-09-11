@@ -148,7 +148,7 @@ FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         xlabel('iter')
                         drawnow
                                 
-                        subplot(2,3,6)
+                        subplot(2,3,5)
                         plot(  delta_torqueYhstry(index-10:index, 1) )
                         title( 'delta Particle Velocity')
                         xlabel('iter')
@@ -184,7 +184,7 @@ FiCalculation(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         xlabel('iter')
                         drawnow
                                 
-                        subplot(2,3,6)
+                        subplot(2,3,5)
                         plot(  delta_torqueYhstry(1:index, 1) )
                         title( 'delta Particle Velocity')
                         xlabel('iter')

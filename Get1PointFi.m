@@ -1,8 +1,13 @@
 function Results = Get1PointFi( Y, Z, initCd,flowModel )
 %myFun - Description
 %
-% Syntax: Fi = Get1PointFi(info, flowModel)
-%
+% Syntax: Fi = Get1PointFi(Y, Z, initCd, flowModel)
+% input arguments list:
+%               Y               Y coordinate of the particle
+%               Z               Z coordinate of the particle
+%               initCd          initial conditioan a array of (5,1) contains the first guess of dynamic coefs 
+%                               of particle and time step for persudo time iteration
+%               flowModel       the COMSOL model manipulated
 % Long description
         Results = zeros(1,17);
         inputSize = size(initCd);
