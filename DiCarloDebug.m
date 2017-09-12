@@ -91,5 +91,6 @@ initCd(5)        = deltaT_0;
         testResult(1,2) = Zp;
 
         testResult(1,3:19) = Get1PointFi(Yp, Zp, initialCondition, flowModel);
+        save('testResult', 'testResult');
 
 
