@@ -21,16 +21,21 @@ function Results = Get1PointFi( Y, Z, initCd,flowModel )
         omegaZ_0 = initCd(4);
         deltaT_0 = initCd(5);
 
-        flowModel.param.set('Yp', Y);
-        flowModel.param.set('Zp', Z);
+        ready = configGeoMesh(Y, Z, flowModel);
+        if ready == false
+                fprintf('the Geometry and Meshing process went wrong!');
+        end
+
+        % flowModel.param.set('Yp', Y);
+        % flowModel.param.set('Zp', Z);
         
         % bulid the geom and mesh according to particle's position
-        flowModel.geom('geom1').run;
+        % flowModel.geom('geom1').run;
         % debug code block in order to show the appearance of geom and mesh
         % mphgeom(flowModel, 'geom1', 'facealpha', 0.5);
         % pause
 
-        flowModel.mesh('mesh1').run;
+        % flowModel.mesh('mesh1').run;
         % debug code block in order to show the appearance of geom and mesh        
         % mphmesh(flowModel, 'mesh1', 'facealpha', 0.5);
         % pause
