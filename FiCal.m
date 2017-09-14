@@ -11,6 +11,12 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         %configuration of sub Loop for inertial lift force calculation
         numIter            = 100;
         ifConverged        = false;
+
+        Yp = flowModel.param.evaluate('Yp');
+        Zp = flowModel.param.evaluate('Zp');
+        Yp = Yp * 1e6;
+        Zp = Zp * 1e6;
+        
         % counterOscillation = 0;
 
         vPxhstry           = zeros(numIter,1);
@@ -208,7 +214,62 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         fprintf('Torque plot go wrong! \n');
                         return
                 end
-                
+
+                % save the track of convergency in order to debug   
+                % save func takes string as variables
+                save(   ['Yp',num2str(Yp),'Zp',num2str(Zp),'_PointTrack'], ...,
+                        'vPxhstry',                ...,
+                        'omegaXhstry'  ,           ...,
+                        'omegaYhstry'  ,           ...,
+                        'omegaZhstry'  ,           ...,
+                        'Fxhstry'      ,           ...,
+                        'Fyhstry'      ,           ...,
+                        'Fzhstry'      ,           ...,
+                        'torqueXhstry' ,           ...,
+                        'torqueYhstry' ,           ...,
+                        'torqueZhstry' ,           ...,
+                        'accXhstry'    ,           ...,
+                        'accYhstry'    ,           ...,
+                        'accZhstry'    ,           ...,
+                        'alphaXhstry'  ,           ...,
+                        'alphaYhstry'  ,           ...,
+                        'alphaZhstry'  ,           ...,
+                        'delta_vPxhstry'     ,     ...,
+                        'delta_omegaXhstry'  ,     ...,
+                        'delta_omegaYhstry'  ,     ...,
+                        'delta_omegaZhstry'  ,     ...,
+                        'delta_Fxhstry'      ,     ...,
+                        'delta_Fyhstry'      ,     ...,
+                        'delta_Fzhstry'      ,     ...,
+                        'delta_torqueXhstry' ,     ...,
+                        'delta_torqueYhstry' ,     ...,
+                        'delta_torqueZhstry' ,     ...,
+                        'delta_accXhstry'    ,     ...,
+                        'delta_accYhstry'    ,     ...,
+                        'delta_accZhstry'    ,     ...,
+                        'delta_alphaXhstry'  ,     ...,
+                        'delta_alphaYhstry'  ,     ...,
+                        'delta_alphaZhstry'  ,     ...,
+                        'var_vPxhstry'       ,     ...,
+                        'var_omegaXhstry'    ,     ...,
+                        'var_omegaYhstry'    ,     ...,
+                        'var_omegaZhstry'    ,     ...,
+                        'var_Fxhstry'        ,     ...,
+                        'var_Fyhstry'        ,     ...,
+                        'var_Fzhstry'        ,     ...,
+                        'var_torqueXhstry'   ,     ...,
+                        'var_torqueYhstry'   ,     ...,
+                        'var_torqueZhstry'   ,     ...,
+                        'var_accXhstry'      ,     ...,
+                        'var_accYhstry'      ,     ...,
+                        'var_accZhstry'      ,     ...,
+                        'var_alphaXhstry'    ,     ...,
+                        'var_alphaYhstry'    ,     ...,
+                        'var_alphaZhstry'          ...,
+                );
+
+
+
                 % the convergency criterion
                 if ( var_Fyhstry(index,1) < 1e-3 )&&( var_Fzhstry(index,1) < 1e-3 )
                         ifConverged = true;
@@ -293,46 +354,5 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         % Alpha_x                = 15;
         % Alpha_y                = 16;
         % Alpha_z                = 17;
-
-        % save the track of convergency in order to debug
-        Yp = flowModel.param.evaluate('Yp');
-        Zp = flowModel.param.evaluate('Zp');
-        Yp = Yp * 1e6;
-        Zp = Zp * 1e6;
-        % save func takes string as variables
-        save(   ['Yp',num2str(Yp),'Zp',num2str(Zp),'_PointTrack'], ...,
-                'vPxhstry',                ...,
-                'omegaXhstry'  ,           ...,
-                'omegaYhstry'  ,           ...,
-                'omegaZhstry'  ,           ...,
-                'Fxhstry'      ,           ...,
-                'Fyhstry'      ,           ...,
-                'Fzhstry'      ,           ...,
-                'torqueXhstry' ,           ...,
-                'torqueYhstry' ,           ...,
-                'torqueZhstry' ,           ...,
-                'accXhstry'    ,           ...,
-                'accYhstry'    ,           ...,
-                'accZhstry'    ,           ...,
-                'alphaXhstry'  ,           ...,
-                'alphaYhstry'  ,           ...,
-                'alphaZhstry'  ,           ...,
-                'delta_vPxhstry'     ,     ...,
-                'delta_omegaXhstry'  ,     ...,
-                'delta_omegaYhstry'  ,     ...,
-                'delta_omegaZhstry'  ,     ...,
-                'delta_Fxhstry'      ,     ...,
-                'delta_Fyhstry'      ,     ...,
-                'delta_Fzhstry'      ,     ...,
-                'delta_torqueXhstry' ,     ...,
-                'delta_torqueYhstry' ,     ...,
-                'delta_torqueZhstry' ,     ...,
-                'delta_accXhstry'    ,     ...,
-                'delta_accYhstry'    ,     ...,
-                'delta_accZhstry'    ,     ...,
-                'delta_alphaXhstry'  ,     ...,
-                'delta_alphaYhstry'  ,     ...,
-                'delta_alphaZhstry'        ...,
-            );
 
 end

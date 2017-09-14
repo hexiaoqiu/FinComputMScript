@@ -1,11 +1,15 @@
         clc;
         ModelUtil.showProgress(true);
-        flowModel        = mphopen('ParagonModel_V5.mph', 'flowModel');
+        %%
+        flowModel        = mphopen('ParagonModel_V2.mph', 'flowModel');
         flowGeom         = flowModel.geom.get('geom1');
         flowMesh         = flowModel.mesh.get('mesh1');
+        %%
         testResult = zeros(1,19);
         testResult(1,1) = 26;
         testResult(1,2) = 8;
+        
+        %%
         [ ...,
                 testResult(1,3 ), ...,   % ifSuccess if calculation is successful
                 testResult(1,4 ), ...,   % Velocity_x_steadyState
@@ -27,5 +31,6 @@
         ] ...,
         = ...,
         FiCal(0,0,0,0,2e-6,flowModel);
-    save('testResult','testResult');
+    FMshNStr0 = testResult;
+    save('FMshNStr0','FMshNStr0');
 
