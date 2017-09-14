@@ -285,28 +285,28 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         end
                 end
 
-        %         % Debug Code Block
-        %         % In this code block, the key parameter are printed in order to check if the constant coef derived from
-        %         % the licit value
-        %         % the constant key parameters are
-        %         % Vp_y = 0 [m/s]
-        %         % Vp_z = 0 [m/s]
-        %         % Xp   = 125e-6 [m]
-        %         % Rp   = 5.5e-6 [m]
-        %         % Yp   = do not change in each all of FiCalculation    
-        %         % Zp   = do not change in each all of FiCalculation
-        %         % Vp_y = flowModel.param.evaluate('Vp_y');
-        %         % Vp_z = flowModel.param.evaluate('Vp_z');
-        %         % Xp   = flowModel.param.evaluate('Xp');
-        %         % Yp   = flowModel.param.evaluate('Yp');
-        %         % Zp   = flowModel.param.evaluate('Zp');
-        %         % Rp   = flowModel.param.evaluate('Rp');
-        %         % fprintf('Vp_y is %8.6f \n', Vp_y);
-        %         % fprintf('Vp_z is %8.6f \n', Vp_z);
-        %         % fprintf('Xp is %8.6f \n', Xp);
-        %         % fprintf('Yp is %8.6f \n', Yp);
-        %         % fprintf('Zp is %8.6f \n', Zp);
-        %         % fprintf('Rp is %8.6f \n', Rp);
+                % Debug Code Block
+                % In this code block, the key parameter are printed in order to check if the constant coef derived from
+                % the licit value
+                % the constant key parameters are
+                % Vp_y = 0 [m/s]
+                % Vp_z = 0 [m/s]
+                % Xp   = 125e-6 [m]
+                % Rp   = 5.5e-6 [m]
+                % Yp   = do not change in each all of FiCalculation    
+                % Zp   = do not change in each all of FiCalculation
+                % Vp_y = flowModel.param.evaluate('Vp_y');
+                % Vp_z = flowModel.param.evaluate('Vp_z');
+                % Xp   = flowModel.param.evaluate('Xp');
+                % Yp   = flowModel.param.evaluate('Yp');
+                % Zp   = flowModel.param.evaluate('Zp');
+                % Rp   = flowModel.param.evaluate('Rp');
+                % fprintf('Vp_y is %8.6f \n', Vp_y);
+                % fprintf('Vp_z is %8.6f \n', Vp_z);
+                % fprintf('Xp is %8.6f \n', Xp);
+                % fprintf('Yp is %8.6f \n', Yp);
+                % fprintf('Zp is %8.6f \n', Zp);
+                % fprintf('Rp is %8.6f \n', Rp);
 
 
         end
