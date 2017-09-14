@@ -9,42 +9,61 @@ function [ifSuccess, ...,
 FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
 
         %configuration of sub Loop for inertial lift force calculation
-        numIter           = 100;
-        ifConverged       = false;
-        counterOscillation= 0;
-        vPxhstry          = zeros(numIter,1);
-        omegaXhstry       = zeros(numIter,1);
-        omegaYhstry       = zeros(numIter,1);
-        omegaZhstry       = zeros(numIter,1);
-        Fxhstry           = zeros(numIter,1);
-        Fyhstry           = zeros(numIter,1);
-        Fzhstry           = zeros(numIter,1);
-        torqueXhstry      = zeros(numIter,1);
-        torqueYhstry      = zeros(numIter,1);
-        torqueZhstry      = zeros(numIter,1);
-        accXhstry         = zeros(numIter,1);
-        accYhstry         = zeros(numIter,1);
-        accZhstry         = zeros(numIter,1);
-        alphaXhstry       = zeros(numIter,1);
-        alphaYhstry       = zeros(numIter,1);
-        alphaZhstry       = zeros(numIter,1);
+        numIter            = 100;
+        ifConverged        = false;
+        % counterOscillation = 0;
 
-        delta_vPxhstry          = zeros(numIter,1);
-        delta_omegaXhstry       = zeros(numIter,1);
-        delta_omegaYhstry       = zeros(numIter,1);
-        delta_omegaZhstry       = zeros(numIter,1);
-        delta_Fxhstry           = zeros(numIter,1);
-        delta_Fyhstry           = zeros(numIter,1);
-        delta_Fzhstry           = zeros(numIter,1);
-        delta_torqueXhstry      = zeros(numIter,1);
-        delta_torqueYhstry      = zeros(numIter,1);
-        delta_torqueZhstry      = zeros(numIter,1);
-        delta_accXhstry         = zeros(numIter,1);
-        delta_accYhstry         = zeros(numIter,1);
-        delta_accZhstry         = zeros(numIter,1);
-        delta_alphaXhstry       = zeros(numIter,1);
-        delta_alphaYhstry       = zeros(numIter,1);
-        delta_alphaZhstry       = zeros(numIter,1);
+        vPxhstry           = zeros(numIter,1);
+        omegaXhstry        = zeros(numIter,1);
+        omegaYhstry        = zeros(numIter,1);
+        omegaZhstry        = zeros(numIter,1);
+        Fxhstry            = zeros(numIter,1);
+        Fyhstry            = zeros(numIter,1);
+        Fzhstry            = zeros(numIter,1);
+        torqueXhstry       = zeros(numIter,1);
+        torqueYhstry       = zeros(numIter,1);
+        torqueZhstry       = zeros(numIter,1);
+        accXhstry          = zeros(numIter,1);
+        accYhstry          = zeros(numIter,1);
+        accZhstry          = zeros(numIter,1);
+        alphaXhstry        = zeros(numIter,1);
+        alphaYhstry        = zeros(numIter,1);
+        alphaZhstry        = zeros(numIter,1);
+
+        delta_vPxhstry     = zeros(numIter,1);
+        delta_omegaXhstry  = zeros(numIter,1);
+        delta_omegaYhstry  = zeros(numIter,1);
+        delta_omegaZhstry  = zeros(numIter,1);
+        delta_Fxhstry      = zeros(numIter,1);
+        delta_Fyhstry      = zeros(numIter,1);
+        delta_Fzhstry      = zeros(numIter,1);
+        delta_torqueXhstry = zeros(numIter,1);
+        delta_torqueYhstry = zeros(numIter,1);
+        delta_torqueZhstry = zeros(numIter,1);
+        delta_accXhstry    = zeros(numIter,1);
+        delta_accYhstry    = zeros(numIter,1);
+        delta_accZhstry    = zeros(numIter,1);
+        delta_alphaXhstry  = zeros(numIter,1);
+        delta_alphaYhstry  = zeros(numIter,1);
+        delta_alphaZhstry  = zeros(numIter,1);
+
+        var_vPxhstry       = zeros(numIter, 1);
+        var_omegaXhstry    = zeros(numIter, 1);
+        var_omegaYhstry    = zeros(numIter, 1);
+        var_omegaZhstry    = zeros(numIter, 1);
+        var_Fxhstry        = zeros(numIter, 1);
+        var_Fyhstry        = zeros(numIter, 1);
+        var_Fzhstry        = zeros(numIter, 1);
+        var_torqueXhstry   = zeros(numIter, 1);
+        var_torqueYhstry   = zeros(numIter, 1);
+        var_torqueZhstry   = zeros(numIter, 1);
+        var_accXhstry      = zeros(numIter, 1);
+        var_accYhstry      = zeros(numIter, 1);
+        var_accZhstry      = zeros(numIter, 1);
+        var_alphaXhstry    = zeros(numIter, 1);
+        var_alphaYhstry    = zeros(numIter, 1);
+        var_alphaZhstry    = zeros(numIter, 1);
+
         % set up the initial value
         if deltaT_0 <= 1e-10
                 deltaT = 2e-6;
@@ -108,6 +127,42 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                 alphaYhstry(index,1)     = alphaY;
                 alphaZhstry(index,1)     = alphaZ;
 
+                if index == 1
+                        delta_vPxhstry(index,1)          = abs( vPxhstry(index,1)      );
+                        delta_omegaXhstry(index,1)       = abs( omegaXhstry(index,1)   );
+                        delta_omegaYhstry(index,1)       = abs( omegaYhstry(index,1)   );
+                        delta_omegaZhstry(index,1)       = abs( omegaZhstry(index,1)   );
+                        delta_Fxhstry(index,1)           = abs( Fxhstry(index,1)       );
+                        delta_Fyhstry(index,1)           = abs( Fyhstry(index,1)       );
+                        delta_Fzhstry(index,1)           = abs( Fzhstry(index,1)       );
+                        delta_torqueXhstry(index,1)      = abs( torqueXhstry(index,1)  );
+                        delta_torqueYhstry(index,1)      = abs( torqueYhstry(index,1)  );
+                        delta_torqueZhstry(index,1)      = abs( torqueZhstry(index,1)  );
+                        delta_accXhstry(index,1)         = abs( accXhstry(index,1)     );
+                        delta_accYhstry(index,1)         = abs( accYhstry(index,1)     );
+                        delta_accZhstry(index,1)         = abs( accZhstry(index,1)     );
+                        delta_alphaXhstry(index,1)       = abs( alphaXhstry(index,1)   );
+                        delta_alphaYhstry(index,1)       = abs( alphaYhstry(index,1)   );
+                        delta_alphaZhstry(index,1)       = abs( alphaZhstry(index,1)   );
+
+                        var_vPxhstry(index,1)          = delta_vPxhstry(index,1)       /  abs( vPxhstry(index,1)     );
+                        var_omegaXhstry(index,1)       = delta_omegaXhstry(index,1)    /  abs( omegaXhstry(index,1)  );
+                        var_omegaYhstry(index,1)       = delta_omegaYhstry(index,1)    /  abs( omegaYhstry(index,1)  );
+                        var_omegaZhstry(index,1)       = delta_omegaZhstry(index,1)    /  abs( omegaZhstry(index,1)  );
+                        var_Fxhstry(index,1)           = delta_Fxhstry(index,1)        /  abs( Fxhstry(index,1)      );
+                        var_Fyhstry(index,1)           = delta_Fyhstry(index,1)        /  abs( Fyhstry(index,1)      );
+                        var_Fzhstry(index,1)           = delta_Fzhstry(index,1)        /  abs( Fzhstry(index,1)      );
+                        var_torqueXhstry(index,1)      = delta_torqueXhstry(index,1)   /  abs( torqueXhstry(index,1) );
+                        var_torqueYhstry(index,1)      = delta_torqueYhstry(index,1)   /  abs( torqueYhstry(index,1) );
+                        var_torqueZhstry(index,1)      = delta_torqueZhstry(index,1)   /  abs( torqueZhstry(index,1) );
+                        var_accXhstry(index,1)         = delta_accXhstry(index,1)      /  abs( accXhstry(index,1)    );
+                        var_accYhstry(index,1)         = delta_accYhstry(index,1)      /  abs( accYhstry(index,1)    );
+                        var_accZhstry(index,1)         = delta_accZhstry(index,1)      /  abs( accZhstry(index,1)    );
+                        var_alphaXhstry(index,1)       = delta_alphaXhstry(index,1)    /  abs( alphaXhstry(index,1)  );
+                        var_alphaYhstry(index,1)       = delta_alphaYhstry(index,1)    /  abs( alphaYhstry(index,1)  );
+                        var_alphaZhstry(index,1)       = delta_alphaZhstry(index,1)    /  abs( alphaZhstry(index,1)  );
+                end
+
                 if index >= 2
                         delta_vPxhstry(index,1)          = abs( vPxhstry(index,1)     - vPxhstry(index-1,1)     );
                         delta_omegaXhstry(index,1)       = abs( omegaXhstry(index,1)  - omegaXhstry(index-1,1)  );
@@ -125,6 +180,23 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         delta_alphaXhstry(index,1)       = abs( alphaXhstry(index,1)  - alphaXhstry(index-1,1)  );
                         delta_alphaYhstry(index,1)       = abs( alphaYhstry(index,1)  - alphaYhstry(index-1,1)  );
                         delta_alphaZhstry(index,1)       = abs( alphaZhstry(index,1)  - alphaZhstry(index-1,1)  );
+
+                        var_vPxhstry(index,1)          = delta_vPxhstry(index,1)       /  abs( vPxhstry(index,1)     );
+                        var_omegaXhstry(index,1)       = delta_omegaXhstry(index,1)    /  abs( omegaXhstry(index,1)  );
+                        var_omegaYhstry(index,1)       = delta_omegaYhstry(index,1)    /  abs( omegaYhstry(index,1)  );
+                        var_omegaZhstry(index,1)       = delta_omegaZhstry(index,1)    /  abs( omegaZhstry(index,1)  );
+                        var_Fxhstry(index,1)           = delta_Fxhstry(index,1)        /  abs( Fxhstry(index,1)      );
+                        var_Fyhstry(index,1)           = delta_Fyhstry(index,1)        /  abs( Fyhstry(index,1)      );
+                        var_Fzhstry(index,1)           = delta_Fzhstry(index,1)        /  abs( Fzhstry(index,1)      );
+                        var_torqueXhstry(index,1)      = delta_torqueXhstry(index,1)   /  abs( torqueXhstry(index,1) );
+                        var_torqueYhstry(index,1)      = delta_torqueYhstry(index,1)   /  abs( torqueYhstry(index,1) );
+                        var_torqueZhstry(index,1)      = delta_torqueZhstry(index,1)   /  abs( torqueZhstry(index,1) );
+                        var_accXhstry(index,1)         = delta_accXhstry(index,1)      /  abs( accXhstry(index,1)    );
+                        var_accYhstry(index,1)         = delta_accYhstry(index,1)      /  abs( accYhstry(index,1)    );
+                        var_accZhstry(index,1)         = delta_accZhstry(index,1)      /  abs( accZhstry(index,1)    );
+                        var_alphaXhstry(index,1)       = delta_alphaXhstry(index,1)    /  abs( alphaXhstry(index,1)  );
+                        var_alphaYhstry(index,1)       = delta_alphaYhstry(index,1)    /  abs( alphaYhstry(index,1)  );
+                        var_alphaZhstry(index,1)       = delta_alphaZhstry(index,1)    /  abs( alphaZhstry(index,1)  );
                 end
 
                 if plotTrace('Force', 6, index, Fxhstry, Fyhstry, Fzhstry, delta_Fxhstry, delta_Fyhstry, delta_Fzhstry) == false
@@ -137,48 +209,8 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         return
                 end
                 
-                %check if iteration reaches oscillation state 
-                if (abs(accX)<1e-8) && (abs(alphaX)<1e-3) && (abs(alphaY)<1e-3) && (abs(alphaZ)<1e-3) && (index >= 10)
-                        if abs(Omega_x - omegaXhstry(index-1,1)) < 1e-3
-                                if abs( alphaX ) > abs( alphaXhstry(index-1,1) )
-                                        counterOscillation = counterOscillation + 1;
-                                end
-                        end
-                        if  abs(Omega_y - omegaYhstry(index-1,1)) < 1e-3
-                                if abs( alphaY ) > abs( alphaYhstry(index-1,1) )
-                                        counterOscillation = counterOscillation + 1;
-                                end
-                        end
-                        if  abs(Omega_z - omegaZhstry(index-1,1)) < 1e-3
-                                if abs( alphaZ ) > abs( alphaZhstry(index-1,1) )
-                                        counterOscillation = counterOscillation + 1;
-                                end
-                        end
-                        if  abs(Vp_x - vPxhstry(index-1,1)) < 1e-3
-                                if abs( accX ) > abs( accXhstry(index-1,1) )
-                                        counterOscillation = counterOscillation + 1;
-                                end
-                        end
-                end
-                
-
-                % In order to prevent the oscillation from intervient the convergency, time step is reduced
-                if (counterOscillation > 10)
-                        fprintf('The oscillation state is detected! Time step is reduced! \n');
-                        if (deltaT > 1e-8)
-                                deltaT = deltaT / 2;
-                                counterOscillation = 0;
-                        else
-                                deltaT = 1e-8;
-                                counterOscillation = 0;
-                                fprintf('Warning! the minimum timestep is reached! \n');
-                        end
-                        %let the calculation move on
-                        continue;                
-                end
-                
                 % the convergency criterion
-                if ( (abs(accX)<1e-10) && (abs(alphaX)<1e-5) && (abs(alphaY)<1e-5) && (abs(alphaZ)<1e-5) )
+                if ( var_Fyhstry(index,1) < 1e-3 )&&( var_Fzhstry(index,1) < 1e-3 )
                         ifConverged = true;
                         fprintf('the loop converges! Good convergency criterion reached! \n');
                         fprintf('It takes %d iterations to reach the convergency! \n', index );                

@@ -7,7 +7,7 @@
 
 %*************************** load the model **********************************************&
 ModelUtil.showProgress(true);
-flowModel        = mphopen('ParagonModel_V1.mph', 'flowModel');
+flowModel        = mphopen('ParagonModel_V2.mph', 'flowModel');
 flowGeom         = flowModel.geom.get('geom1');
 flowMesh         = flowModel.mesh.get('mesh1');
 
