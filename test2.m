@@ -49,8 +49,8 @@ for idxY = 1:1:16
         end
 end
 
-testResult = zeros(119,21);
-for idxG = 1:1:119
+testResult = zeros(96,21);
+for idxG = 1:1:96
         testResult(idxG,1) = pstnTable(idxG,1);
         testResult(idxG,2) = pstnTable(idxG,2);
         testResult(idxG,3) = pstnTable(idxG,3);
