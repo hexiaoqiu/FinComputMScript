@@ -57,17 +57,17 @@ for idxG = 1:1:119
         testResult(idxG,4) = pstnTable(idxG,4);
 end
 
-vPx_0            = 0;
-omegaX_0         = 0;
-omegaY_0         = 0;
-omegaZ_0         = 0;
-deltaT_0         = 2e-6;
-initialCondition = zeros(5,1);
-initCd(1,1)        = vPx_0   ;
-initCd(2,1)        = omegaX_0;
-initCd(3,1)        = omegaY_0;
-initCd(4,1)        = omegaZ_0;
-initCd(5,1)        = deltaT_0;
+vPx_0       = 0;
+omegaX_0    = 0;
+omegaY_0    = 0;
+omegaZ_0    = 0;
+deltaT_0    = 2e-6;
+initCd      = zeros(5,1);
+initCd(1,1) = vPx_0   ;
+initCd(2,1) = omegaX_0;
+initCd(3,1) = omegaY_0;
+initCd(4,1) = omegaZ_0;
+initCd(5,1) = deltaT_0;
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -76,7 +76,7 @@ initCd(5,1)        = deltaT_0;
 for idxG = 1:1:16
         Yp = testResult(idxG,3);        
         Zp = testResult(idxG,4);
-        testResult(idxG,5:21) = Get1PointFi(Yp, Zp, initialCondition, flowModel);
+        testResult(idxG,5:21) = Get1PointFi(Yp, Zp, initCd, flowModel);
         LiuChao_FMshGStr0 = testResult;
         save('LiuChao_FMshGStr0','LiuChao_FMshGStr0');  
         quiver(LiuChao_FMshGStr0(:,1), LiuChao_FMshGStr0(:,2), LiuChao_FMshGStr0(:,11), LiuChao_FMshGStr0(:,12));     
