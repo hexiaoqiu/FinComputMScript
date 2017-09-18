@@ -217,7 +217,7 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
 
                 % save the track of convergency in order to debug   
                 % save func takes string as variables
-                save(   ['Yp',num2str(Yp),'Zp',num2str(Zp),'_PointTrack'], ...,
+                save(   ['Yp',num2str(Yp),'Zp',num2str(Zp),'_PointTrack.mat'], ...,
                         'vPxhstry',                ...,
                         'omegaXhstry'  ,           ...,
                         'omegaYhstry'  ,           ...,
