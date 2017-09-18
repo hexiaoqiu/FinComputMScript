@@ -35,12 +35,12 @@ Zp            = flowModel.param.evaluate( {'Zp'} );                %[m]
 LimitZ        = Height/2  - Rp;                         % Upper Limitation of Z direct variation 
 LimitY        = Width /2  - Rp;                         % Upper Limitation of Y direct variation 
 
-Y_undim = 0.1:0.1:1.7;
-Z_undim = 0.1:0.1:0.7;
+Y_undim = [0.1:0.1:1.4,1.525,1.55];
+Z_undim = [0.1:0.1:0.5,0.55]';
 pstnTable = zeros(119,4);
 idxG = 1;
-for idxY = 1:1:17
-        for idxZ = 1:1:7
+for idxY = 1:1:16
+        for idxZ = 1:1:6
                 pstnTable(idxG,1) = Y_undim(1,idxY);
                 pstnTable(idxG,2) = Z_undim(1,idxZ);
                 pstnTable(idxG,3) = (Y_undim(1,idxY) * H/2 + H);
@@ -73,12 +73,13 @@ initCd(5,1)        = deltaT_0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       Step 3     Running  iterations                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for idxG = 1:1:119
+for idxG = 1:1:16
         Yp = testResult(idxG,3);        
         Zp = testResult(idxG,4);
         testResult(idxG,5:21) = Get1PointFi(Yp, Zp, initialCondition, flowModel);
         LiuChao_FMshGStr0 = testResult;
-        save('LiuChao_FMshGStr0','LiuChao_FMshGStr0');       
+        save('LiuChao_FMshGStr0','LiuChao_FMshGStr0');  
+        quiver(LiuChao_FMshGStr0(:,1), LiuChao_FMshGStr0(:,2), LiuChao_FMshGStr0(:,11), LiuChao_FMshGStr0(:,12));     
 end
 
 
