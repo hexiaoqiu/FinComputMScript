@@ -38,7 +38,7 @@ LimitY        = Width /2  - Rp;                         % Upper Limitation of Y 
 %%
 Y_undim = [0.1:0.1:1.4,1.525,1.55]';
 Z_undim = [0.1:0.1:0.5,0.55]';
-pstnTable = zeros(119,4);
+pstnTable = zeros(96,4);
 idxG = 1;
 for idxY = 1:1:16
         for idxZ = 1:1:6
