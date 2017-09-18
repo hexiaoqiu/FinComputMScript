@@ -35,7 +35,8 @@ Zp            = flowModel.param.evaluate( {'Zp'} );                %[m]
 LimitZ        = Height/2  - Rp;                         % Upper Limitation of Z direct variation 
 LimitY        = Width /2  - Rp;                         % Upper Limitation of Y direct variation 
 
-Y_undim = [0.1:0.1:1.4,1.525,1.55];
+%%
+Y_undim = [0.1:0.1:1.4,1.525,1.55]';
 Z_undim = [0.1:0.1:0.5,0.55]';
 pstnTable = zeros(119,4);
 idxG = 1;
