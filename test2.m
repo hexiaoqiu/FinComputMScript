@@ -74,15 +74,14 @@ initCd(5,1) = deltaT_0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       Step 3     Running  iterations                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for idxG = 1:1:16
+for idxG = 2:1:16
                 Yp              = testResult(idxG,3);        
                 Zp              = testResult(idxG,4);
         testResult(idxG,5: 21)  = Get1PointFi(Yp, Zp, initCd, flowModel);
         LiuChao_NMshGStr0       = testResult;
-        save('LiuChao_NMeshGStr0','LiuChao_NMeshGStr0');  
-        quiver(LiuChao_NMeshGStr0(:,1), LiuChao_NMeshGStr0(:,2), LiuChao_NMeshGStr0(:,11), LiuChao_NMeshGStr0(:,12));     
+        save('LiuChao_NMshGStr0','LiuChao_NMshGStr0');  
+        quiver(LiuChao_NMshGStr0(:,1), LiuChao_NMshGStr0(:,2), LiuChao_NMshGStr0(:,11), LiuChao_NMshGStr0(:,12));     
 end
-
 
 % vPx_0            = 0.857730833816637;
 % omegaX_0         = 36.691906804135650;

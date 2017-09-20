@@ -10,9 +10,11 @@ function ifSuccess = configGeoMesh(Y, Z, flowModel)
 % Long description
 % Set up the Geometry and Build mesh for Flow Model in order to
 % get ready for simulation
-
-        flowModel.param.set('Yp', Y);
-        flowModel.param.set('Zp', Z);
+        precision = 128;
+        YpStr     = [num2str(Y,precision),'[m]'];
+        ZpStr     = [num2str(Z,precision),'[m]'];
+        flowModel.param.set('Yp', YpStr);
+        flowModel.param.set('Zp', ZpStr);
         
         % bulid the geom and mesh according to particle's position
         flowModel.geom('geom1').run;

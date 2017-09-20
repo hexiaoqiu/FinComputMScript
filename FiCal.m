@@ -11,6 +11,7 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         %configuration of sub Loop for inertial lift force calculation
         numIter            = 100;
         ifConverged        = false;
+        precision          = 128;
 
         Yp = flowModel.param.evaluate('Yp');
         Zp = flowModel.param.evaluate('Zp');
@@ -80,13 +81,19 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
 
         % Make a guess of equilibrium state 
         Vp_x    = Vp_x_0;
-        flowModel.param.set('Vp_x', Vp_x);        
         Omega_x = Omega_x_0;
-        flowModel.param.set('Omega_x', Omega_x);        
         Omega_y = Omega_y_0;
-        flowModel.param.set('Omega_y', Omega_y);
-        Omega_z = Omega_z_0;        
-        flowModel.param.set('Omega_z', Omega_z);
+        Omega_z = Omega_z_0;     
+           
+        vStr    = [ num2str(Vp_x_0,   precision), '[m/s]'];
+        omgStrX = [ num2str(Omega_x_0,precision), '[rad/s]'];
+        omgStrY = [ num2str(Omega_y_0,precision), '[rad/s]'];
+        omgStrZ = [ num2str(Omega_z_0,precision), '[rad/s]'];
+
+        flowModel.param.set('Vp_x',    vStr   );        
+        flowModel.param.set('Omega_x', omgStrX);        
+        flowModel.param.set('Omega_y', omgStrY);
+        flowModel.param.set('Omega_z', omgStrZ);
 
         % iteration code
         for index = 1:numIter
@@ -111,10 +118,14 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                 Omega_y = Omega_y + (alphaY * deltaT);
                 Omega_z = Omega_z + (alphaZ * deltaT);
                 %update the Parameters
-                flowModel.param.set('Vp_x', Vp_x);
-                flowModel.param.set('Omega_x', Omega_x);
-                flowModel.param.set('Omega_y', Omega_y);
-                flowModel.param.set('Omega_z', Omega_z);
+                vStr    = [ num2str(Vp_x_0,   precision), '[m/s]'  ];
+                omgStrX = [ num2str(Omega_x_0,precision), '[rad/s]'];
+                omgStrY = [ num2str(Omega_y_0,precision), '[rad/s]'];
+                omgStrZ = [ num2str(Omega_z_0,precision), '[rad/s]'];
+                flowModel.param.set('Vp_x',    vStr     );
+                flowModel.param.set('Omega_x', omgStrX  );
+                flowModel.param.set('Omega_y', omgStrY  );
+                flowModel.param.set('Omega_z', omgStrZ  );
                 
                 vPxhstry(index,1)        = Vp_x;
                 omegaXhstry(index,1)     = Omega_x;
