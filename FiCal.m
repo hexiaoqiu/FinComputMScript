@@ -13,10 +13,7 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         ifConverged        = false;
         precision          = 128;
 
-        Yp = flowModel.param.evaluate('Yp');
-        Zp = flowModel.param.evaluate('Zp');
-        Yp = Yp * 1e6;
-        Zp = Zp * 1e6;
+        
         
         % counterOscillation = 0;
 
@@ -226,6 +223,48 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         return
                 end
 
+                
+
+
+
+                % the convergency criterion
+                if ( var_Fyhstry(index,1) < 1e-3 )&&( var_Fzhstry(index,1) < 1e-3 )
+                        ifConverged = true;
+                        fprintf('the loop converges! Good convergency criterion reached! \n');
+                        fprintf('It takes %d iterations to reach the convergency! \n', index );                
+                        break;   
+                end
+
+                if (index == 100)                      
+                        if (ifConverged == false)
+                                fprintf('the loop fail to converge! \n');
+                                break;
+                        end
+                end
+
+                Omega_x_Check = flowModel.param.evaluate('Omega_x');
+                Omega_y_Check = flowModel.param.evaluate('Omega_x');
+                Omega_z_Check = flowModel.param.evaluate('Omega_x');
+                Vp_x_Check    = flowModel.param.evaluate('Vp_x');
+                Vp_y_Check    = flowModel.param.evaluate('Vp_y');
+                Vp_z_Check    = flowModel.param.evaluate('Vp_z');
+                Xp            = flowModel.param.evaluate('Xp');
+                Yp            = flowModel.param.evaluate('Yp');
+                Zp            = flowModel.param.evaluate('Zp');
+                Rp            = flowModel.param.evaluate('Rp');
+
+                Xp = Xp * 1e6;
+                Yp = Yp * 1e6;
+                Zp = Zp * 1e6;
+                
+                fprintf('*************--------> INFO OUTPUT <--------------***************** \n');
+                fprintf('----------> %d th Iteration Finished \n',                index);
+                fprintf('|Yp      = %d[um]        |Zp      = %d[um]           |Xp      = %d[um]       |Rp = %f[m] \n',                 Yp, Zp, Xp,Rp);
+                fprintf('|Vp_x    = %f[m/s]       |Vp_y    = %f[m/s]          |Vp_z    = %f[m/s]   \n',                                  Vp_x_Check, Vp_y_Check, Vp_z_Check);
+                fprintf('|omgX    = %f[rad/s]     |omgZ    = %f[rad/s]        |omgY    = %f[rad/s] \n',                                Omega_x_Check, Omega_y_Check, Omega_z_Check);
+                fprintf('|Fx      = %f[N]         |Fy      = %f[N]            |Fz      = %f[N] \n',                                    Fx, Fy, Fz);
+                fprintf('|torqueX = %f[N]         |torqueY = %f[N]            |torqueZ = %f[N] \n',                                    torqueX, torqueY, torqueZ);
+
                 % save the track of convergency in order to debug   
                 % save func takes string as variables
                 save(   ['Yp',num2str(Yp),'Zp',num2str(Zp),'_PointTrack.mat'], ...,
@@ -278,23 +317,6 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         'var_alphaYhstry'    ,     ...,
                         'var_alphaZhstry'          ...,
                 );
-
-
-
-                % the convergency criterion
-                if ( var_Fyhstry(index,1) < 1e-3 )&&( var_Fzhstry(index,1) < 1e-3 )
-                        ifConverged = true;
-                        fprintf('the loop converges! Good convergency criterion reached! \n');
-                        fprintf('It takes %d iterations to reach the convergency! \n', index );                
-                        break;   
-                end
-
-                if (index == 100)                      
-                        if (ifConverged == false)
-                                fprintf('the loop fail to converge! \n');
-                                break;
-                        end
-                end
 
                 % Debug Code Block
                 % In this code block, the key parameter are printed in order to check if the constant coef derived from
