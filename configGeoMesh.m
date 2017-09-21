@@ -10,9 +10,10 @@ function ifSuccess = configGeoMesh(Y, Z, flowModel)
 % Long description
 % Set up the Geometry and Build mesh for Flow Model in order to
 % get ready for simulation
-        precision = 128;
-        YpStr     = [num2str(Y,precision),'[m]'];
-        ZpStr     = [num2str(Z,precision),'[m]'];
+
+        inputForm = '%10.9e';
+        YpStr     = [num2str(Y,inputForm),'[m]'];
+        ZpStr     = [num2str(Z,inputForm),'[m]'];
         flowModel.param.set('Yp', YpStr);
         flowModel.param.set('Zp', ZpStr);
         
