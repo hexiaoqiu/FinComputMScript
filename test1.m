@@ -6,8 +6,8 @@
         flowMesh         = flowModel.mesh.get('mesh1');
         %%
         testResult = zeros(1,19);
-        testResult(1,1) = 26;
-        testResult(1,2) = 8;
+        testResult(1,1) = 26e-6;
+        testResult(1,2) = 8e-6;
         
         %%
         [ ...,

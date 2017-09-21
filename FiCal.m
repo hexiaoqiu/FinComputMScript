@@ -82,10 +82,10 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         Omega_y = Omega_y_0;
         Omega_z = Omega_z_0;     
            
-        vStr    = [ num2str(Vp_x_0,   precision), '[m/s]'];
-        omgXStr = [ num2str(Omega_x_0,precision), '[rad/s]'];
-        omgYStr = [ num2str(Omega_y_0,precision), '[rad/s]'];
-        omgZStr = [ num2str(Omega_z_0,precision), '[rad/s]'];
+        vStr    = [ num2str(Vp_x_0,   inputForm), '[m/s]'];
+        omgXStr = [ num2str(Omega_x_0,inputForm), '[rad/s]'];
+        omgYStr = [ num2str(Omega_y_0,inputForm), '[rad/s]'];
+        omgZStr = [ num2str(Omega_z_0,inputForm), '[rad/s]'];
 
         flowModel.param.set('Vp_x',    vStr   );        
         flowModel.param.set('Omega_x', omgXStr);        
@@ -247,10 +247,10 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                 fprintf('|omgX    = %6.5e[rad/s]     |omgZ    = %6.5e[rad/s]        |omgY    = %6.5e[rad/s] \n',                                Omega_x_Check, Omega_y_Check, Omega_z_Check);
                 fprintf('|Fx      = %6.5e[N]         |Fy      = %6.5e[N]            |Fz      = %6.5e[N] \n',                                    Fx, Fy, Fz);
                 fprintf('|torqueX = %6.5e[N]         |torqueY = %6.5e[N]            |torqueZ = %6.5e[N] \n',                                    torqueX, torqueY, torqueZ);
-                fprintf(['|The Inserted Vp_x is '   , flowModel.param.get('Vp_x'), '\n' ]);
-                fprintf(['|The Inserted Omega_X is ', flowModel.param.get('Omega_x'), '\n' ]);
-                fprintf(['|The Inserted Omega_Y is ', flowModel.param.get('Omega_y'), '\n' ]);
-                fprintf(['|The Inserted Omega_Z is ', flowModel.param.get('Omega_z'), '\n' ]);
+                fprintf('|The Inserted Vp_x is     %s \n', char( flowModel.param.get('Vp_x')    ) );
+                fprintf('|The Inserted Omega_X is  %s \n', char( flowModel.param.get('Omega_x') ) );
+                fprintf('|The Inserted Omega_Y is  %s \n', char( flowModel.param.get('Omega_y') ) );
+                fprintf('|The Inserted Omega_Z is  %s \n', char( flowModel.param.get('Omega_z') ) );
                 fprintf('\n');
 
                 % save the track of convergency in order to debug   
