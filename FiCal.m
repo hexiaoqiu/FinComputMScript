@@ -239,6 +239,7 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                 Yp = Yp * 1e6;
                 Zp = Zp * 1e6;
                 
+                fprintf('\n');
                 fprintf('*************--------> INFO OUTPUT <--------------***************** \n');
                 fprintf('----------> %d th Iteration Finished \n',                index);
                 fprintf('|Yp      = %d[um]           |Zp      = %d[um]              |Xp      = %d[um]       |Rp = %6.5e[m] \n',                 Yp, Zp, Xp,Rp);
@@ -246,10 +247,11 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                 fprintf('|omgX    = %6.5e[rad/s]     |omgZ    = %6.5e[rad/s]        |omgY    = %6.5e[rad/s] \n',                                Omega_x_Check, Omega_y_Check, Omega_z_Check);
                 fprintf('|Fx      = %6.5e[N]         |Fy      = %6.5e[N]            |Fz      = %6.5e[N] \n',                                    Fx, Fy, Fz);
                 fprintf('|torqueX = %6.5e[N]         |torqueY = %6.5e[N]            |torqueZ = %6.5e[N] \n',                                    torqueX, torqueY, torqueZ);
-                fprintf(['|The Inserted Vp_x is '   , vStr]);
-                fprintf(['|The Inserted Omega_X is ', omgXStr]);
-                fprintf(['|The Inserted Omega_Y is ', omgYStr]);
-                fprintf(['|The Inserted Omega_Z is ', omgZStr]);
+                fprintf(['|The Inserted Vp_x is \n'   , vStr]);
+                fprintf(['|The Inserted Omega_X is \n', omgXStr]);
+                fprintf(['|The Inserted Omega_Y is \n', omgYStr]);
+                fprintf(['|The Inserted Omega_Z is \n', omgZStr]);
+                fprintf('\n');
 
                 % save the track of convergency in order to debug   
                 % save func takes string as variables
