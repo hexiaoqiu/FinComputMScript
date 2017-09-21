@@ -1,7 +1,7 @@
         clc;
         ModelUtil.showProgress(true);
         %%
-        flowModel        = mphopen('ParagonModel_V4.mph', 'flowModel');
+        flowModel        = mphopen('TestModel00.mph', 'flowModel');
         flowGeom         = flowModel.geom.get('geom1');
         flowMesh         = flowModel.mesh.get('mesh1');
         %%
@@ -31,6 +31,6 @@
         ] ...,
         = ...,
         FiCal(0,0,0,0,2e-6,flowModel);
-    NMshGStr0 = testResult;
-    save('NMshNStr0','NMshNStr0');
+    testModel00 = testResult;
+    save('testModel00','testModel00');
 
