@@ -1,22 +1,49 @@
-function [ifSuccess, ...,
-          Velocity_x_steadyState, ...,
-          Omega_x_steadyState,Omega_y_steadyState,Omega_z_steadyState, ...,
-          F_x,F_y,F_z, ...,
-          Torq_x,Torq_y,Torq_z, ...,
-          Acc_x,Acc_y,Acc_z, ...,
-          Alpha_x,Alpha_y,Alpha_z] ...,
-= ...,
-FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
-
+function Results = FiCal( initCd, timeStep,flowModel)
+% FiCal - Description
+%
+% Syntax: Results = FiCal(Y, Z, initCd, flowModel)
+% input arguments list:
+%               initCd          initial conditioan a array of (1,4) contains the first guess of dynamic coefs 
+%                               of particle and time step for persudo time iteration
+%               timeStep        the time step for loop
+%               flowModel       the COMSOL model manipulated
+% output arguments:
+%               Results         a array of (1,17)
+%               Results(1,1 )   ifSuccess if calculation is successful
+%               Results(1,2 )   Velocity_x_steadyState
+%               Results(1,3 )   Omega_x_steadyState,
+%               Results(1,4 )   Omega_y_steadyState,
+%               Results(1,5 )   Omega_z_steadyState
+%               Results(1,6 )   F_x,
+%               Results(1,7 )   F_y,
+%               Results(1,8 )   F_z,
+%               Results(1,9 )   Torq_x,
+%               Results(1,10)   Torq_y,
+%               Results(1,11)   Torq_z,
+%               Results(1,12)   Acc_x,
+%               Results(1,13)   Acc_y,
+%               Results(1,14)   Acc_z,
+%               Results(1,15)   Alpha_x,
+%               Results(1,16)   Alpha_y,
+%               Results(1,17)   Alpha_z
         %configuration of sub Loop for inertial lift force calculation
-        numIter            = 100;
-        ifConverged        = false;
-        inputForm          = '%20.19e';
+        numIter     = 100;
+        ifConverged = false;
+        inputForm   = '%20.19e';
 
+        % set up the initial value and time step
+        if timeStep <= 1e-10
+                deltaT = 2e-6;
+        else
+                deltaT = timeStep;
+        end
         
+        setVpOmg(initCd, inputForm, flowModel);
+        Vp_x    = initCd(1,1);
+        Omega_x = initCd(1,2);
+        Omega_y = initCd(1,3);
+        Omega_z = initCd(1,4);
         
-        % counterOscillation = 0;
-
         vPxhstry           = zeros(numIter,1);
         omegaXhstry        = zeros(numIter,1);
         omegaYhstry        = zeros(numIter,1);
@@ -68,61 +95,12 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
         var_alphaYhstry    = zeros(numIter, 1);
         var_alphaZhstry    = zeros(numIter, 1);
 
-        % set up the initial value
-        if deltaT_0 <= 1e-10
-                deltaT = 2e-6;
-        else
-                deltaT = deltaT_0;
-        end
-
-
-        % Make a guess of equilibrium state 
-        Vp_x    = Vp_x_0;
-        Omega_x = Omega_x_0;
-        Omega_y = Omega_y_0;
-        Omega_z = Omega_z_0;     
-           
-        vStr    = [ num2str(Vp_x_0,   inputForm), '[m/s]'];
-        omgXStr = [ num2str(Omega_x_0,inputForm), '[rad/s]'];
-        omgYStr = [ num2str(Omega_y_0,inputForm), '[rad/s]'];
-        omgZStr = [ num2str(Omega_z_0,inputForm), '[rad/s]'];
-
-        flowModel.param.set('Vp_x',    vStr   );        
-        flowModel.param.set('Omega_x', omgXStr);        
-        flowModel.param.set('Omega_y', omgYStr);
-        flowModel.param.set('Omega_z', omgZStr);
 
         % iteration code
         for index = 1:numIter
-                %solve the stationary flow field
-                flowModel.study('std1').run;
-                %get the dynamic variables
-                Fx      = mphglobal(flowModel, {'Fx'});
-                Fy      = mphglobal(flowModel, {'Fy'});
-                Fz      = mphglobal(flowModel, {'Fz'});
-                torqueX = mphglobal(flowModel, {'tau_x'});
-                torqueY = mphglobal(flowModel, {'tau_y'});
-                torqueZ = mphglobal(flowModel, {'tau_z'});
-                accX    = mphglobal(flowModel, {'accX'});
-                accY    = mphglobal(flowModel, {'accY'});
-                accZ    = mphglobal(flowModel, {'accZ'});
-                alphaX  = mphglobal(flowModel, {'alphaX'});
-                alphaY  = mphglobal(flowModel, {'alphaY'});
-                alphaZ  = mphglobal(flowModel, {'alphaZ'});
-                %calculate next step's velocity and angular velocity
-                Vp_x    = Vp_x    + (accX   * deltaT);
-                Omega_x = Omega_x + (alphaX * deltaT);
-                Omega_y = Omega_y + (alphaY * deltaT);
-                Omega_z = Omega_z + (alphaZ * deltaT);
-                %update the Parameters
-                vStr    = [ num2str(Vp_x,   inputForm), '[m/s]'  ];
-                omgXStr = [ num2str(Omega_x,inputForm), '[rad/s]'];
-                omgYStr = [ num2str(Omega_y,inputForm), '[rad/s]'];
-                omgZStr = [ num2str(Omega_z,inputForm), '[rad/s]'];
-                flowModel.param.set('Vp_x',    vStr     );
-                flowModel.param.set('Omega_x', omgXStr  );
-                flowModel.param.set('Omega_y', omgYStr  );
-                flowModel.param.set('Omega_z', omgZStr  );
+
+                [Fx, Fy, Fz, torqueX, torqueY, torqueZ, accX, accY, accZ, alphaX, alphaY, alphaZ] ...,
+                = runOnce(flowModel);
                 
                 vPxhstry(index,1)        = Vp_x;
                 omegaXhstry(index,1)     = Omega_x;
@@ -223,36 +201,8 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                         return
                 end
 
-
-                Omega_x_Check = flowModel.param.evaluate('Omega_x');
-                Omega_y_Check = flowModel.param.evaluate('Omega_x');
-                Omega_z_Check = flowModel.param.evaluate('Omega_x');
-                Vp_x_Check    = flowModel.param.evaluate('Vp_x');
-                Vp_y_Check    = flowModel.param.evaluate('Vp_y');
-                Vp_z_Check    = flowModel.param.evaluate('Vp_z');
-                Xp            = flowModel.param.evaluate('Xp');
-                Yp            = flowModel.param.evaluate('Yp');
-                Zp            = flowModel.param.evaluate('Zp');
-                Rp            = flowModel.param.evaluate('Rp');
-
-                Xp = Xp * 1e6;
-                Yp = Yp * 1e6;
-                Zp = Zp * 1e6;
+                outputInfo(flowModel, index);
                 
-                fprintf('\n');
-                fprintf('*************--------> INFO OUTPUT <--------------***************** \n');
-                fprintf('----------> %d th Iteration Finished \n',                index);
-                fprintf('|Yp      = %d[um]           |Zp      = %d[um]              |Xp      = %d[um]       |Rp = %6.5e[m] \n',                 Yp, Zp, Xp,Rp);
-                fprintf('|Vp_x    = %6.5e[m/s]       |Vp_y    = %6.5e[m/s]          |Vp_z    = %6.5e[m/s]   \n',                                Vp_x_Check, Vp_y_Check, Vp_z_Check);
-                fprintf('|omgX    = %6.5e[rad/s]     |omgZ    = %6.5e[rad/s]        |omgY    = %6.5e[rad/s] \n',                                Omega_x_Check, Omega_y_Check, Omega_z_Check);
-                fprintf('|Fx      = %6.5e[N]         |Fy      = %6.5e[N]            |Fz      = %6.5e[N] \n',                                    Fx, Fy, Fz);
-                fprintf('|torqueX = %6.5e[N]         |torqueY = %6.5e[N]            |torqueZ = %6.5e[N] \n',                                    torqueX, torqueY, torqueZ);
-                fprintf('|The Inserted Vp_x is     %s \n', char( flowModel.param.get('Vp_x')    ) );
-                fprintf('|The Inserted Omega_X is  %s \n', char( flowModel.param.get('Omega_x') ) );
-                fprintf('|The Inserted Omega_Y is  %s \n', char( flowModel.param.get('Omega_y') ) );
-                fprintf('|The Inserted Omega_Z is  %s \n', char( flowModel.param.get('Omega_z') ) );
-                fprintf('\n');
-
                 % save the track of convergency in order to debug   
                 % save func takes string as variables
                 save(   ['Yp',num2str(Yp),'Zp',num2str(Zp),'_PointTrack.mat'], ...,
@@ -343,6 +293,15 @@ FiCal(Vp_x_0,Omega_x_0,Omega_y_0,Omega_z_0, deltaT_0,flowModel)
                                 break;
                         end
                 end
+
+                % calculate next step's velocity and angular velocity
+                % and update the Parameters
+                Vp_x    = Vp_x    + (accX   * deltaT);
+                Omega_x = Omega_x + (alphaX * deltaT);
+                Omega_y = Omega_y + (alphaY * deltaT);
+                Omega_z = Omega_z + (alphaZ * deltaT);
+                nextVpOmg = [Vp_x, Omega_x, Omega_y, Omega_z];
+                setVpOmg( nextVpOmg, inputForm, flowModel);
 
 
         end
