@@ -296,10 +296,10 @@ function Results = FiCal( initCd, timeStep,flowModel)
 
                 % calculate next step's velocity and angular velocity
                 % and update the Parameters
-                Vp_x    = Vp_x    + (accX   * deltaT);
-                Omega_x = Omega_x + (alphaX * deltaT);
-                Omega_y = Omega_y + (alphaY * deltaT);
-                Omega_z = Omega_z + (alphaZ * deltaT);
+                Vp_x      = Vp_x    + (accX   * deltaT);
+                Omega_x   = Omega_x + (alphaX * deltaT);
+                Omega_y   = Omega_y + (alphaY * deltaT);
+                Omega_z   = Omega_z + (alphaZ * deltaT);
                 nextVpOmg = [Vp_x, Omega_x, Omega_y, Omega_z];
                 setVpOmg( nextVpOmg, inputForm, flowModel);
 
@@ -314,22 +314,23 @@ function Results = FiCal( initCd, timeStep,flowModel)
                 ifSuccess = false;
         end
 
-        Velocity_x_steadyState = Vp_x;
-        Omega_x_steadyState    = Omega_x;
-        Omega_y_steadyState    = Omega_y;
-        Omega_z_steadyState    = Omega_z;
-        F_x                    = mphglobal(flowModel, {'Fx'});
-        F_y                    = mphglobal(flowModel, {'Fy'});
-        F_z                    = mphglobal(flowModel, {'Fz'});
-        Torq_x                 = mphglobal(flowModel, {'tau_x'});
-        Torq_y                 = mphglobal(flowModel, {'tau_y'});
-        Torq_z                 = mphglobal(flowModel, {'tau_z'});
-        Acc_x                  = mphglobal(flowModel, {'accX'});
-        Acc_y                  = mphglobal(flowModel, {'accY'});
-        Acc_z                  = mphglobal(flowModel, {'accZ'});
-        Alpha_x                = mphglobal(flowModel, {'alphaX'});
-        Alpha_y                = mphglobal(flowModel, {'alphaY'});
-        Alpha_z                = mphglobal(flowModel, {'alphaZ'});
+        Results(1, 1 ) =   ifSuccess;
+        Results(1, 2 ) =   Vp_x;
+        Results(1, 3 ) =   Omega_x;
+        Results(1, 4 ) =   Omega_y;
+        Results(1, 5 ) =   Omega_z;
+        Results(1, 6 ) =   mphglobal(flowModel, {'Fx'});
+        Results(1, 7 ) =   mphglobal(flowModel, {'Fy'});
+        Results(1, 8 ) =   mphglobal(flowModel, {'Fz'});
+        Results(1, 9 ) =   mphglobal(flowModel, {'tau_x'});
+        Results(1, 10) =   mphglobal(flowModel, {'tau_y'});
+        Results(1, 11) =   mphglobal(flowModel, {'tau_z'});
+        Results(1, 12) =   mphglobal(flowModel, {'accX'});
+        Results(1, 13) =   mphglobal(flowModel, {'accY'});
+        Results(1, 14) =   mphglobal(flowModel, {'accZ'});
+        Results(1, 15) =   mphglobal(flowModel, {'alphaX'});
+        Results(1, 16) =   mphglobal(flowModel, {'alphaY'});
+        Results(1, 17) =   mphglobal(flowModel, {'alphaZ'});
 
         % Debug Code faked output
         % ifSuccess              = 1;
