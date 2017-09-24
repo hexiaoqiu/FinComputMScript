@@ -19,9 +19,11 @@ function outputInfo(flowModel, index)
          Fx,   Fy,   Fz,   torqueX, torqueY, torqueZ, ...,
          accX, accY, accZ, alphaX,  alphaY,  alphaZ ...,
         ] ...,
-        = mphglobal(flowModel, ..., 
-         'Fx',   'Fy',   'Fz',   'torqueX', 'torqueY', 'torqueZ', ...,
-         'accX', 'accY', 'accZ', 'alphaX',  'alphaY',  'alphaZ' ...,
+        = mphglobal(flowModel, ...,
+            { ...,
+              'Fx',   'Fy',   'Fz',   'tau_x', 'tau_y', 'tau_z', ...,
+              'accX', 'accY', 'accZ', 'alphaX',  'alphaY',  'alphaZ' ...,
+            }...,
         );
 
         Xp = Xp * 1e6;

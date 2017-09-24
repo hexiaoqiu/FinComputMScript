@@ -7,7 +7,7 @@
 
 %*************************** load the model **********************************************&
 ModelUtil.showProgress(true);
-flowModel        = mphopen('LiuChao.mph', 'flowModel');
+flowModel        = mphopen('Test.mph', 'flowModel');
 flowGeom         = flowModel.geom.get('geom1');
 flowMesh         = flowModel.mesh.get('mesh1');
 
@@ -44,7 +44,7 @@ for idxY = 1:1:16
         for idxZ = 1:1:6
                 pstnTable(idxG,1) = Y_undim(idxY,1);
                 pstnTable(idxG,2) = Z_undim(idxZ,1);
-                pstnTable(idxG,3) = (Y_undim(idxY,1) * H/2 + H);
+                pstnTable(idxG,3) = (Y_undim(idxY,1) * H/4 + H/2);
                 pstnTable(idxG,4) = (Z_undim(idxZ,1) * H/2 + H/2);
                 idxG = idxG + 1;
         end
@@ -63,21 +63,22 @@ omegaX_0    = 0;
 omegaY_0    = 0;
 omegaZ_0    = 0;
 deltaT_0    = 2e-6;
-initCd      = zeros(5,1);
+initCd      = zeros(1,4);
 initCd(1,1) = vPx_0   ;
-initCd(2,1) = omegaX_0;
-initCd(3,1) = omegaY_0;
-initCd(4,1) = omegaZ_0;
-initCd(5,1) = deltaT_0;
+initCd(1,2) = omegaX_0;
+initCd(1,3) = omegaY_0;
+initCd(1,4) = omegaZ_0;
+timeStep = 1e-7;
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       Step 3     Running  iterations                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-for idxG = 2:1:16
+clc
+for idxG = 2:1:3
                 Yp              = testResult(idxG,3);        
                 Zp              = testResult(idxG,4);
-        testResult(idxG,5: 21)  = Get1PointFi(Yp, Zp, initCd, flowModel);
+        testResult(idxG,5: 21)  = Get1PointFi(Yp, Zp, initCd, timeStep, flowModel);
         LiuChao_NMshGStr0       = testResult;
         save('LiuChao_NMshGStr0','LiuChao_NMshGStr0');  
         quiver(LiuChao_NMshGStr0(:,1), LiuChao_NMshGStr0(:,2), LiuChao_NMshGStr0(:,11), LiuChao_NMshGStr0(:,12));     

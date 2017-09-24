@@ -30,6 +30,8 @@ function Results = FiCal( initCd, timeStep,flowModel)
         numIter     = 100;
         ifConverged = false;
         inputForm   = '%20.19e';
+        YpStr       = char( flowModel.param.get('Yp') );
+        ZpStr       = char( flowModel.param.get('Zp') );
 
         % set up the initial value and time step
         if timeStep <= 1e-10
@@ -205,7 +207,7 @@ function Results = FiCal( initCd, timeStep,flowModel)
                 
                 % save the track of convergency in order to debug   
                 % save func takes string as variables
-                save(   ['Yp',num2str(Yp),'Zp',num2str(Zp),'_PointTrack.mat'], ...,
+                save(   ['Yp_',YpStr,'Zp_',ZpStr,'_PointTrack.mat'], ...,
                         'vPxhstry',                ...,
                         'omegaXhstry'  ,           ...,
                         'omegaYhstry'  ,           ...,
@@ -314,24 +316,6 @@ function Results = FiCal( initCd, timeStep,flowModel)
                 ifSuccess = false;
         end
 
-        Results(1, 1 ) =   ifSuccess;
-        Results(1, 2 ) =   Vp_x;
-        Results(1, 3 ) =   Omega_x;
-        Results(1, 4 ) =   Omega_y;
-        Results(1, 5 ) =   Omega_z;
-        Results(1, 6 ) =   mphglobal(flowModel, {'Fx'});
-        Results(1, 7 ) =   mphglobal(flowModel, {'Fy'});
-        Results(1, 8 ) =   mphglobal(flowModel, {'Fz'});
-        Results(1, 9 ) =   mphglobal(flowModel, {'tau_x'});
-        Results(1, 10) =   mphglobal(flowModel, {'tau_y'});
-        Results(1, 11) =   mphglobal(flowModel, {'tau_z'});
-        Results(1, 12) =   mphglobal(flowModel, {'accX'});
-        Results(1, 13) =   mphglobal(flowModel, {'accY'});
-        Results(1, 14) =   mphglobal(flowModel, {'accZ'});
-        Results(1, 15) =   mphglobal(flowModel, {'alphaX'});
-        Results(1, 16) =   mphglobal(flowModel, {'alphaY'});
-        Results(1, 17) =   mphglobal(flowModel, {'alphaZ'});
-
         % Debug Code faked output
         % ifSuccess              = 1;
         % Velocity_x_steadyState = 2;
@@ -350,5 +334,30 @@ function Results = FiCal( initCd, timeStep,flowModel)
         % Alpha_x                = 15;
         % Alpha_y                = 16;
         % Alpha_z                = 17;
+
+        % Results(1, 1 ) =   ifSuccess;
+        % Results(1, 2 ) =   Vp_x;
+        % Results(1, 3 ) =   Omega_x;
+        % Results(1, 4 ) =   Omega_y;
+        % Results(1, 5 ) =   Omega_z;
+        % Results(1, 6 ) =   mphglobal(flowModel, {'Fx'});
+        % Results(1, 7 ) =   mphglobal(flowModel, {'Fy'});
+        % Results(1, 8 ) =   mphglobal(flowModel, {'Fz'});
+        % Results(1, 9 ) =   mphglobal(flowModel, {'tau_x'});
+        % Results(1, 10) =   mphglobal(flowModel, {'tau_y'});
+        % Results(1, 11) =   mphglobal(flowModel, {'tau_z'});
+        % Results(1, 12) =   mphglobal(flowModel, {'accX'});
+        % Results(1, 13) =   mphglobal(flowModel, {'accY'});
+        % Results(1, 14) =   mphglobal(flowModel, {'accZ'});
+        % Results(1, 15) =   mphglobal(flowModel, {'alphaX'});
+        % Results(1, 16) =   mphglobal(flowModel, {'alphaY'});
+        % Results(1, 17) =   mphglobal(flowModel, {'alphaZ'});
+
+        Results = ...,
+        [ ...,
+          ifSuccess, Vp_x, Omega_x, Omega_y, Omega_z, Fx, Fy, Fz, torqueX, torqueY, torqueZ, accX, accY, accZ, ...,
+          alphaX, alphaY, alphaZ ...,
+        ];
+
 
 end
