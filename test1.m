@@ -1,7 +1,7 @@
 clc;
 ModelUtil.showProgress(true);
 %%
-flowModel        = mphopen('mesh75W.mph', 'flowModel');
+flowModel        = mphopen('mesh.mph', 'flowModel');
 flowGeom         = flowModel.geom.get('geom1');
 flowMesh         = flowModel.mesh.get('mesh1');
 %%
