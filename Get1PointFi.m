@@ -1,4 +1,4 @@
-function Results = Get1PointFi( Y, Z, initCd, timeStep, flowModel )
+function outputCoefs = Get1PointFi( Y, Z, initCd, timeStep, flowModel )
 % Get1PointFi - Description
 %
 % Syntax: Results = Get1PointFi(Y, Z, initCd, flowModel)
@@ -29,17 +29,94 @@ function Results = Get1PointFi( Y, Z, initCd, timeStep, flowModel )
 %               Results(1,16)   Alpha_y,
 %               Results(1,17)   Alpha_z
 % Long description
-        Results = zeros(1,17);
-        inputSize = size(initCd);
-        if inputSize(1) ~= 1 || inputSize(2) ~= 4
-                fprintf('the input Initial Condition vector is not well shaped')
-                return
+
+        global numIter dataPack initCd steadyState inputForm;
+        numIter  = 100;
+        inputForm   = '%20.19e';
+
+        dataPack = struct;
+        
+        dataPack.vpXHstry               = zeros(numIter,1);
+        dataPack.omgXHstry            = zeros(numIter,1);
+        dataPack.omgYHstry            = zeros(numIter,1);
+        dataPack.omgZHstry            = zeros(numIter,1);
+        dataPack.FxHstry                = zeros(numIter,1);
+        dataPack.FyHstry                = zeros(numIter,1);
+        dataPack.FzHstry                = zeros(numIter,1);
+        dataPack.tauXHstry           = zeros(numIter,1);
+        dataPack.tauYHstry           = zeros(numIter,1);
+        dataPack.tauZHstry           = zeros(numIter,1);
+        dataPack.accXHstry              = zeros(numIter,1);
+        dataPack.accYHstry              = zeros(numIter,1);
+        dataPack.accZHstry              = zeros(numIter,1);
+        dataPack.alphaXHstry            = zeros(numIter,1);
+        dataPack.alphaYHstry            = zeros(numIter,1);
+        dataPack.alphaZHstry            = zeros(numIter,1);
+
+        dataPack.deltaVpXHstry     = zeros(numIter,1);
+        dataPack.deltaOmgXHstry  = zeros(numIter,1);
+        dataPack.deltaOmgYHstry  = zeros(numIter,1);
+        dataPack.deltaOmgZHstry  = zeros(numIter,1);
+        dataPack.deltaFxHstry      = zeros(numIter,1);
+        dataPack.deltaFyHstry      = zeros(numIter,1);
+        dataPack.deltaFzHstry      = zeros(numIter,1);
+        dataPack.deltaTauXHstry = zeros(numIter,1);
+        dataPack.deltaTauYHstry = zeros(numIter,1);
+        dataPack.deltaTauZHstry = zeros(numIter,1);
+        dataPack.deltaAccXHstry    = zeros(numIter,1);
+        dataPack.deltaAccYHstry    = zeros(numIter,1);
+        dataPack.deltaAccZHstry    = zeros(numIter,1);
+        dataPack.deltaAlphaXHstry  = zeros(numIter,1);
+        dataPack.deltaAlphaYHstry  = zeros(numIter,1);
+        dataPack.deltaAlphaZHstry  = zeros(numIter,1);
+
+        dataPack.varVpXHstry       = zeros(numIter, 1);
+        dataPack.varOmgXHstry    = zeros(numIter, 1);
+        dataPack.varOmgYHstry    = zeros(numIter, 1);
+        dataPack.varOmgZHstry    = zeros(numIter, 1);
+        dataPack.varFxHstry        = zeros(numIter, 1);
+        dataPack.varFyHstry        = zeros(numIter, 1);
+        dataPack.varFzHstry        = zeros(numIter, 1);
+        dataPack.varTauXHstry   = zeros(numIter, 1);
+        dataPack.varTauYHstry   = zeros(numIter, 1);
+        dataPack.varTauZHstry   = zeros(numIter, 1);
+        dataPack.varAccXHstry      = zeros(numIter, 1);
+        dataPack.varAccYHstry      = zeros(numIter, 1);
+        dataPack.varAccZHstry      = zeros(numIter, 1);
+        dataPack.varAlphaXHstry    = zeros(numIter, 1);
+        dataPack.varAlphaYHstry    = zeros(numIter, 1);
+        dataPack.varAlphaZHstry    = zeros(numIter, 1);
+
+        steadyState = struct;
+        steadyState.vpX = 0;
+        steadyState.omgX = 0;
+        steadyState.omgY = 0;
+        steadyState.omgZ = 0;
+        steadyState.Fx = 0;
+        steadyState.Fy = 0;
+        steadyState.Fz = 0;
+        steadyState.tauX = 0;
+        steadyState.tauY = 0;
+        steadyState.tauZ = 0;
+        steadyState.accX = 0;
+        steadyState.accY = 0;
+        steadyState.accZ = 0;
+        steadyState.alphaX = 0;
+        steadyState.alphaY = 0;
+        steadyState.alphaZ = 0;
+
+        initCd = struct;
+        initCd.vpX  = 0;
+        initCd.omgX = 0;
+        initCd.omgY = 0;
+        initCd.omgZ = 0;
+
+
+        if checkInitCd( initCd )
+                fprintf('The initial condition is not good! ');
+                return;
         end
 
-        ready = configGeoMesh(Y, Z, flowModel);
-        if ready == false
-                fprintf('the Geometry and Meshing process went wrong!');
-        end
 
         % flowModel.param.set('Yp', Y);
         % flowModel.param.set('Zp', Z);
@@ -56,6 +133,6 @@ function Results = Get1PointFi( Y, Z, initCd, timeStep, flowModel )
         % pause
 
         % call the function to calculate the Fin
-        Results = FiCal(initCd, timeStep, flowModel);
+        outputCoefs = FiCal(initCd, timeStep, flowModel);
 
 end
