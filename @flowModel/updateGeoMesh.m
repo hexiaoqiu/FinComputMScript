@@ -1,4 +1,4 @@
-function ifSuccess = configGeoMesh(fM)
+function ifSuccess = updateGeoMesh(fM)
 % configGeoMesh - Description
 %
 % Syntax: ifSuccess = configGeoMesh(flowModel)
