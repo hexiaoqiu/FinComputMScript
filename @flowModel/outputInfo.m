@@ -17,11 +17,11 @@ function outputInfo( fM )
         fprintf('------------> In flow Model Class \n')
         fprintf('|yP      = %d[m]           |zP      = %d[m] \n',   fM.yP,  fM.zP ); 
         fprintf('|Vp_x    = %6.5e[m/s]   \n', fM.vpX);
-        fprintf('|omgX    = %6.5e[rad/s]     |omgZ    = %6.5e[rad/s]        |omgY    = %6.5e[rad/s] \n',  fM.omega.x, fM.omega.y, fM.omega.z);
-        fprintf('|Fx      = %6.5e[N]         |Fy      = %6.5e[N]            |Fz      = %6.5e[N] \n',      fM.force.x,fM.force.y,fM.force.z);
-        fprintf('|accX    = %6.5e[N]         |accY    = %6.5e[N]            |accZ    = %6.5e[N] \n',      fM.acc.x,fM.acc.y,fM.acc.z);
-        fprintf('|torqueX = %6.5e[N]         |torqueY = %6.5e[N]            |torqueZ = %6.5e[N] \n',      fM.tau.x,fM.tau.y,fM.tau.z);
-        fprintf('|alphaX  = %6.5e[N]         |alphaY  = %6.5e[N]            |alphaZ  = %6.5e[N] \n',      fM.alpha.x,fM.alpha.y,fM.alpha.z);
+        fprintf('|omgX    = %6.5e[rad/s]     |omgZ    = %6.5e[rad/s]        |omgY    = %6.5e[rad/s] \n',  fM.omega(1), fM.omega(2), fM.omega(3));
+        fprintf('|Fx      = %6.5e[N]         |Fy      = %6.5e[N]            |Fz      = %6.5e[N] \n',      fM.force(1),fM.force(2),fM.force(3));
+        fprintf('|accX    = %6.5e[N]         |accY    = %6.5e[N]            |accZ    = %6.5e[N] \n',      fM.acc(1),fM.acc(2),fM.acc(3));
+        fprintf('|torqueX = %6.5e[N]         |torqueY = %6.5e[N]            |torqueZ = %6.5e[N] \n',      fM.tau(1),fM.tau(2),fM.tau(3));
+        fprintf('|alphaX  = %6.5e[N]         |alphaY  = %6.5e[N]            |alphaZ  = %6.5e[N] \n',      fM.alpha(1),fM.alpha(2),fM.alpha(3));
         fprintf('\n');
 
 

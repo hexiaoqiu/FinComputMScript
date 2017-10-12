@@ -1,10 +1,12 @@
 function stepForward( theCase )
-        theCase.flowModel.vpX     = theCase.flowModel.vpX     + theCase.flowModel.acc.x   * theCase.deltaT;
-        theCase.flowModel.omega.x = theCase.flowModel.omega.x + theCase.flowModel.alpha.x * theCase.deltaT;
-        theCase.flowModel.omega.y = theCase.flowModel.omega.y + theCase.flowModel.alpha.y * theCase.deltaT;
-        theCase.flowModel.omega.z = theCase.flowModel.omega.z + theCase.flowModel.alpha.z * theCase.deltaT;
+        vpX   = getVpX( theCase.flowModel);
+        omega = getOmg(theCase.flowModel);
+        acc   = getAcc(theCase.flowModel);
+        alpha = getAlpha(theCase.flowModel);
 
-        updateVpXOmg(theCase.flowModel);
+        vpX   = vpX     + acc(1)   * theCase.deltaT;
+        omega = omega   + alpha    * theCase.deltaT;
 
-        theCase.flowModel.updated = false;
+        setVpXOmg( vpX, omega, theCase.flowModel);
+
 end

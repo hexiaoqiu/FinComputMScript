@@ -25,10 +25,10 @@ function runOnce(fM)
         fM.mphModel.study('std1').run;
         %get the dynamic variables
         [ ...,
-        fM.force.x, fM.force.y, fM.force.z, ...,
-        fM.tau.x,   fM.tau.y,   fM.tau.z, ...,
-        fM.acc.x,   fM.acc.y,   fM.acc.z, ...,
-        fM.alpha.x, fM.alpha.y, fM.alpha.z ...,
+        fM.force(1), fM.force(2), fM.force(3), ...,
+        fM.tau(1),   fM.tau(2),   fM.tau(3), ...,
+        fM.acc(1),   fM.acc(2),   fM.acc(3), ...,
+        fM.alpha(1), fM.alpha(2), fM.alpha(3) ...,
         ] ...,        
         = ..., 
         mphglobal(fM.mphModel, {'Fx','Fy', 'Fz', 'tau_x', 'tau_y', 'tau_z', 'accX', 'accY', 'accZ', 'alphaX', 'alphaY', 'alphaZ'});

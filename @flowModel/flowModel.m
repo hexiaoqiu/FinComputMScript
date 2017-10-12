@@ -5,11 +5,11 @@ classdef flowModel < handle
                 mphModel;
 
                 vpX   = 0;
-                omega = struct('x',0,'y',0,'z',0);
-                force = struct('x',0,'y',0,'z',0);
-                tau   = struct('x',0,'y',0,'z',0);
-                acc   = struct('x',0,'y',0,'z',0);
-                alpha = struct('x',0,'y',0,'z',0);
+                omega = [0,0,0];
+                force = [0,0,0];
+                tau   = [0,0,0];
+                acc   = [0,0,0];
+                alpha = [0,0,0];
 
                 updated = false;
         end
@@ -26,23 +26,32 @@ classdef flowModel < handle
                         fM.updated = false;
                 end
 
-                function setVpXOmg(vitessX, omegaX, omegaY, omegaZ, fM)
+                function setVpXOmg(vitessX, omg, fM)
                         fM.vpX = vitessX;
-                        fM.omega.x = omegaX;
-                        fM.omega.y = omegaY;
-                        fM.omega.z = omegaZ;
-
+                        fM.omega = omg;
                         updateVpXOmg(fM)
-
                         resetDynamics(fM);
+                        fM.updated = false;
+                end
 
+                function setVpX( vitessX, fM )
+                        fM.vpX = vitessX;
+                        updateVpXOmg( fM );
+                        resetDynamics( fM );
+                        fM.updated = false;
+                end
+
+                function  setOmg( omg, fM)
+                        fM.omega = omg;
+                        updateVpXOmg( fM );
+                        resetDynamics( fM );
                         fM.updated = false;
                 end
 
                 function setYpZp( Y_p, Z_p, fM )
                         fM.yP = Y_p;
                         fM.zP = Z_p;
-                        if configGeoMesh(fM) == false
+                        if updateGeoMesh(fM) == false
                                 fprintf('the Geom or Mesh is not correct!');
                         end
 
@@ -57,32 +66,61 @@ classdef flowModel < handle
                         fM.updated = true;
                 end
 
+                function [velocityX, angularVelocity] = getVpXOmg( fM )
+                        velocityX = fM.vpX;
+                        angularVelocity = fM.omega;
+                end
+
+                function velocityX = getVpX( fM )
+                        velocityX = fM.vpX;                        
+                end
+
+                function angularVelocity = getOmg( fM )
+                        angularVelocity = fM.omega;
+                end
+
+                function FORCE = getForce( fM )
+                        FORCE = fM.force;
+                end
+
+                function ACC = getAcc( fM )
+                        ACC = fM.acc;
+                end
+
+                function TAU = getTau( fM )
+                        TAU = fM.tau;
+                end
+
+                function ALPHA = getAlpha( fM );
+                        ALPHA = fM.alpha;
+                end
+
                 outputInfo( fM )
 
 
         end
 
         methods (Access = private)
-                ifSuccess = configGeoMesh(fM)
+                ifSuccess = updateGeoMesh(fM)
                 runOnce(fM)
 
                 function updateVpXOmg(fM)
                         vpXStr        = [ num2str(fM.vpX,    fM.inputForm), '[m/s]'];
-                        omgXStr       = [ num2str(fM.omega.x,fM.inputForm), '[rad/s]'];
-                        omgYStr       = [ num2str(fM.omega.y,fM.inputForm), '[rad/s]'];
-                        omgZStr       = [ num2str(fM.omega.z,fM.inputForm), '[rad/s]'];
-
-                        fM.mphModel.param.set('Vp_x',    vpXStr );        
+                        omgXStr       = [ num2str(fM.omega(1),fM.inputForm), '[rad/s]'];
+                        omgYStr       = [ num2str(fM.omega(2),fM.inputForm), '[rad/s]'];
+                        omgZStr       = [ num2str(fM.omega(3),fM.inputForm), '[rad/s]'];
+ 
+                        fM.mphModel.param.set('Vp_x',    vpXStr );  
                         fM.mphModel.param.set('Omega_x', omgXStr);        
                         fM.mphModel.param.set('Omega_y', omgYStr);
                         fM.mphModel.param.set('Omega_z', omgZStr);
                 end
 
                 function resetDynamics( fM )
-                        fM.force = struct('x',0,'y',0,'z',0);
-                        fM.tau   = struct('x',0,'y',0,'z',0);
-                        fM.acc   = struct('x',0,'y',0,'z',0);
-                        fM.alpha = struct('x',0,'y',0,'z',0);
+                        fM.force = [0,0,0];
+                        fM.tau   = [0,0,0];
+                        fM.acc   = [0,0,0];
+                        fM.alpha = [0,0,0];
                 end
         end
 end

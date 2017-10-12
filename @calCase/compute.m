@@ -1,50 +1,42 @@
-function run( theCase )
+function ok = compute( theCase )
 
         %configuration of sub Loop for inertial lift force calculation
         ifConverged = false;       
-        theCase.flowModel.setVpOmg( theCase.initCd.vpX, ...,
-                                            theCase.initCd.omegaX, theCase.initCd.omegaY, theCase.initCd.omegaZ, ...,
-                                            theCase.flowModel );
+        setVpXOmg( theCase.initCd.vpX, theCase.initCd.omega,  theCase.flowModel );
         % iteration code
-        for index = 3:numIter
+        for index = 1:theCase.numIter
 
                 updateFTau( theCase.flowModel );
-                keepTracks( theCase );
+                keepTracks( index, theCase );
                 stepForward( theCase );
 
-
-
-                % the convergency criterion
-                if ( var_Fyhstry(index,1) < 1e-3 )&&( var_Fzhstry(index,1) < 1e-3 )
+                if checkConvergency(index,theCase) == true
                         ifConverged = true;
-                        fprintf('the loop converges! Good convergency criterion reached! \n');
-                        fprintf('It takes %d iterations to reach the convergency! \n', index );                
-                        break;   
+                        break;
                 end
 
-                if (index == 100)                      
+                if (index == theCase.numIter)                      
                         if (ifConverged == false)
                                 fprintf('the loop fail to converge! \n');
                                 break;
                         end
                 end
 
-                % calculate next step's velocity and angular velocity
-                % and update the Parameters
-                
-                steadyState.vpX = steadyState.vpX + steadyState.accX * deltaT;
-                nextVpOmg.vpX = steadyState.vpX;
-                setVpOmg( nextVpOmg, inputForm, flowModel);
-
-
         end
+        theCase.steadyVpX = getVpX( theCase.flowModel );
+        theCase.steadyOmg = getOmg( theCase.flowModel );
+        theCase.steadyForce = getForce( theCase.flowModel );
+        theCase.steadyTau = getTau( theCase.flowModel );
+        theCase.steadyAcc = getAcc( theCase.flowModel );
+        theCase.steadyAlpha = getAlpha( theCase.flowModel );
+        theCase.Fi =  theCase.steadyForce
 
 
         %Output the vars
         if ifConverged == true
-                ifSuccess = true;
+                ok = true;
         else
-                ifSuccess = false;
+                ok = false;
         end
 
 end

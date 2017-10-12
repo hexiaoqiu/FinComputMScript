@@ -4,15 +4,16 @@ classdef  calCase < handle
                 numIter;
                 deltaT;
 
-                Fi          = struct('x',0,'y',0,'z',0);
+                Fi          = [0,0,0];
                 steadyVpX   = 0;
-                steadyForce = struct('x',0,'y',0,'z',0);
-                steadyOmg   = struct('x',0,'y',0,'z',0);
-                steadyTau   = struct('x',0,'y',0,'z',0);
-                steadyAcc   = struct('x',0,'y',0,'z',0);
-                steadyAlpha = struct('x',0,'y',0,'z',0);
+                steadyOmg   = [0,0,0];
 
-                initCd = struct('vpX',0,'omegaX',0,'omegaY',0,'omegaZ',0);
+                steadyForce = [0,0,0];
+                steadyTau   = [0,0,0];
+                steadyAcc   = [0,0,0];
+                steadyAlpha = [0,0,0];
+
+                initCd = struct('vpX',0,'omega',[0,0,0]);
 
                 vpXHstry   ;
                 omgXHstry  ;
@@ -67,10 +68,12 @@ classdef  calCase < handle
         end
 
         methods 
-                function theCase = calCase( fM )
+                function theCase = calCase( numberOfIteration, timeStep, fM )
+
                         theCase.flowModel = fM;
-                        theCase.numIter = 100;
-                        theCase.deltaT = 1e-6;
+                        theCase.numIter   = numberOfIteration;
+                        theCase.deltaT    = timeStep;
+
                         theCase.vpXHstry    = zeros(theCase.numIter,1);
                         theCase.omgXHstry   = zeros(theCase.numIter,1);
                         theCase.omgYHstry   = zeros(theCase.numIter,1);
@@ -127,5 +130,10 @@ classdef  calCase < handle
                 compute( theCase );
                 stepForward( theCase );
         end
+
+        methods (Access = private)
+                plotTrace(name,figNo, index, data1, data2, data3, data4, data5,data6)
+        end
+
         
 end
