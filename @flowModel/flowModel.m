@@ -26,7 +26,7 @@ classdef flowModel < handle
                         fM.updated = false;
                 end
 
-                function setVpXOmg(vitessX, omg, fM)
+                function setVpXOmg(fM, vitessX, omg)
                         fM.vpX = vitessX;
                         fM.omega = omg;
                         updateVpXOmg(fM)
@@ -34,21 +34,21 @@ classdef flowModel < handle
                         fM.updated = false;
                 end
 
-                function setVpX( vitessX, fM )
+                function setVpX( fM, vitessX )
                         fM.vpX = vitessX;
                         updateVpXOmg( fM );
                         resetDynamics( fM );
                         fM.updated = false;
                 end
 
-                function  setOmg( omg, fM)
+                function  setOmg( fM, omg )
                         fM.omega = omg;
                         updateVpXOmg( fM );
                         resetDynamics( fM );
                         fM.updated = false;
                 end
 
-                function setYpZp( Y_p, Z_p, fM )
+                function setYpZp( fM, Y_p, Z_p )
                         fM.yP = Y_p;
                         fM.zP = Z_p;
                         if updateGeoMesh(fM) == false
@@ -91,7 +91,7 @@ classdef flowModel < handle
                         TAU = fM.tau;
                 end
 
-                function ALPHA = getAlpha( fM );
+                function ALPHA = getAlpha( fM )
                         ALPHA = fM.alpha;
                 end
 

@@ -1,14 +1,14 @@
-function ok = checkConvergency(index, theCase)
+function ok = checkConvergency( theCase )
 %myFun - Description
 %
 % Syntax: ok = checkConvergency(index, theCase)
 %
 % Long description
         % the convergency criterion
-        if ( theCase.varFyHstry(index) < 1e-3 )&&( theCase.varFzHstry(index) < 1e-3 )
+        if ( theCase.varFyHstry(theCase.index) < 1e-3 )&&( theCase.varFzHstry(theCase.index) < 1e-3 )
                 
                 fprintf('the loop converges! Good convergency criterion reached! \n');
-                fprintf('It takes %d iterations to reach the convergency! \n', index );                
+                fprintf('It takes %d iterations to reach the convergency! \n', theCase.index );                
                 ok = true;
         else
                 ok = false;

@@ -3,6 +3,7 @@ classdef  calCase < handle
                 flowModel
                 numIter;
                 deltaT;
+                index;
 
                 Fi          = [0,0,0];
                 steadyVpX   = 0;
@@ -73,7 +74,31 @@ classdef  calCase < handle
                         theCase.flowModel = fM;
                         theCase.numIter   = numberOfIteration;
                         theCase.deltaT    = timeStep;
+                        theCase.allocateTracks()
 
+                end
+
+                function setNumIter(theCase, numberOfIteration)
+                        theCase.numIter = numberOfIteration;
+                        theCase.allocateTracks();
+                end
+
+                function setDeltaT( theCase, timeStep )
+                        theCase.deltaT = timeStep;
+                end
+
+                compute( theCase );
+                stepForward( theCase );
+                keepTracks(theCase, index);
+                plotCase( theCase );
+                ok = checkConvergency(theCase, index);
+        end
+
+        methods (Access = private)
+
+                plotTrace(name, figNo, index, data1, data2, data3, data4, data5, data6);
+
+                function allocateTracks(theCase)
                         theCase.vpXHstry    = zeros(theCase.numIter,1);
                         theCase.omgXHstry   = zeros(theCase.numIter,1);
                         theCase.omgYHstry   = zeros(theCase.numIter,1);
@@ -124,15 +149,7 @@ classdef  calCase < handle
                         theCase.varAlphaXHstry   = zeros(theCase.numIter, 1);
                         theCase.varAlphaYHstry   = zeros(theCase.numIter, 1);
                         theCase.varAlphaZHstry   = zeros(theCase.numIter, 1);
-
                 end
-
-                compute( theCase );
-                stepForward( theCase );
-        end
-
-        methods (Access = private)
-                plotTrace(name,figNo, index, data1, data2, data3, data4, data5,data6)
         end
 
         
