@@ -1,4 +1,4 @@
-function plotTrace(theCase, name, figNo, data1, data2, data3, data4, data5, data6)
+function plotVectorTrace(theCase, name, figNo, data1, data2, data3, data4, data5, data6)
 %myFun - Description
 %
 % Syntax: ifSuccessful = plotTrace(data1, data2, data3, data4, data5,data6)

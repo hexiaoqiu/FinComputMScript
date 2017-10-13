@@ -96,7 +96,8 @@ classdef  calCase < handle
 
         methods (Access = private)
 
-                plotTrace(name, figNo, index, data1, data2, data3, data4, data5, data6);
+                plotVectorTrace( theCase, name, figNo, data1, data2, data3, data4, data5, data6);
+                plotScalarTrace( theCase, name, figNo, data1, data2 );
 
                 function allocateTracks(theCase)
                         theCase.vpXHstry    = zeros(theCase.numIter,1);
